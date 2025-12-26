@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Reservation } from '../../services/api.service';
-import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
 
 interface DashboardStats {
@@ -49,7 +49,6 @@ interface DashboardStats {
     selector: 'app-admin',
     standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, BaseChartDirective],
-    providers: [provideCharts(withDefaultRegisterables())],
     templateUrl: './admin.component.html',
     styleUrl: './admin.component.css'
 })

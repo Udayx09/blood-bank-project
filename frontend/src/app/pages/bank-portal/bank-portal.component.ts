@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
 @Component({
     selector: 'app-bank-portal',
     standalone: true,
     imports: [CommonModule, FormsModule, RouterModule, BaseChartDirective],
-    providers: [provideCharts(withDefaultRegisterables())],
     templateUrl: './bank-portal.component.html',
     styleUrl: './bank-portal.component.css'
 })
