@@ -86,7 +86,7 @@ export class AdminLoginComponent {
 
     login() {
         // Simple password check for testing
-        if (this.password === 'hack@1234') {
+        if (this.password === 'udaysproject18') {
             localStorage.setItem('adminToken', 'admin-authenticated');
             this.router.navigate(['/admin']);
         } else {
