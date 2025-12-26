@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@SuppressWarnings("unchecked")
 public class DonorNotificationService {
 
     private static final Logger log = LoggerFactory.getLogger(DonorNotificationService.class);

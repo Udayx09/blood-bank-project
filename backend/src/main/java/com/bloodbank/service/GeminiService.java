@@ -21,12 +21,14 @@ public class GeminiService {
 
     private static final String GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/";
 
-    // Fallback models - if one quota is exhausted, try the next
+    // Latest models as of December 2025 with fallbacks
     private static final String[] MODELS = {
+            "gemini-2.5-flash",
+            "gemini-2.5-pro",
             "gemini-2.0-flash",
             "gemini-1.5-flash",
             "gemini-1.5-pro",
-            "gemini-pro"
+            "gemini-1.0-pro"
     };
 
     private static final String SYSTEM_PROMPT = """

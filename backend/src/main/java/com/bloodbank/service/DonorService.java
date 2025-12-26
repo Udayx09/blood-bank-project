@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-@SuppressWarnings("unchecked")
 public class DonorService {
 
     private static final Logger log = LoggerFactory.getLogger(DonorService.class);
