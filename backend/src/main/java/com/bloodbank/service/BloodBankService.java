@@ -5,6 +5,7 @@ import com.bloodbank.entity.BloodBank;
 import com.bloodbank.entity.BloodInventory;
 import com.bloodbank.repository.BloodBankRepository;
 import com.bloodbank.repository.BloodInventoryRepository;
+import com.bloodbank.repository.BloodUnitRepository;
 import com.bloodbank.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +20,16 @@ public class BloodBankService {
     private final BloodBankRepository bloodBankRepository;
     private final BloodInventoryRepository inventoryRepository;
     private final ReservationRepository reservationRepository;
+    private final BloodUnitRepository bloodUnitRepository;
 
     public BloodBankService(BloodBankRepository bloodBankRepository,
             BloodInventoryRepository inventoryRepository,
-            ReservationRepository reservationRepository) {
+            ReservationRepository reservationRepository,
+            BloodUnitRepository bloodUnitRepository) {
         this.bloodBankRepository = bloodBankRepository;
         this.inventoryRepository = inventoryRepository;
         this.reservationRepository = reservationRepository;
+        this.bloodUnitRepository = bloodUnitRepository;
     }
 
     public List<BloodBankDto> getAllBloodBanks() {
@@ -106,8 +110,15 @@ public class BloodBankService {
     @Transactional
     public boolean deleteBloodBank(Long id) {
         if (bloodBankRepository.existsById(id)) {
+            // Delete all related data first
             reservationRepository.deleteByBloodBankId(id);
+            bloodUnitRepository.deleteByBloodBankId(id);
             inventoryRepository.deleteByBloodBankId(id);
+            // Clear password hash to remove bank account if any
+            bloodBankRepository.findById(id).ifPresent(bank -> {
+                bank.setPasswordHash(null);
+                bloodBankRepository.save(bank);
+            });
             bloodBankRepository.deleteById(id);
             return true;
         }

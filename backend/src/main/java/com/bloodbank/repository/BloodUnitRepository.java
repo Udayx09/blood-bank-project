@@ -69,4 +69,7 @@ public interface BloodUnitRepository extends JpaRepository<BloodUnit, Long> {
 
         // Count total units for a bank (for sequential numbering)
         long countByBloodBankId(Long bloodBankId);
+
+        // Delete all units for a blood bank
+        void deleteByBloodBankId(Long bloodBankId);
 }
