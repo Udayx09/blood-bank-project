@@ -171,6 +171,7 @@ button {
     color: var(--text-secondary);
     transition: var(--transition);
     position: relative;
+    cursor: pointer;
 }
 
 .nav-links a::after {
