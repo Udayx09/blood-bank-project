@@ -9,11 +9,15 @@ import { routes } from './app/app.routes';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
+// Import ng2-charts provider
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 bootstrapApplication(AppComponent, {
     providers: [
         provideAnimations(),
         provideRouter(routes),
-        provideHttpClient()
+        provideHttpClient(),
+        provideCharts(withDefaultRegisterables())
     ]
 }).catch((err) => console.error(err));
+
