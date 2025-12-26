@@ -767,12 +767,14 @@
                 <button class="prescription-close-btn" (click)="closePrescriptionViewer()">×</button>
                 <div class="prescription-content">
                     <img *ngIf="!viewingPrescription?.endsWith('.pdf')"
-                        [src]="'http://localhost:8080' + viewingPrescription" alt="Prescription">
+                        [src]="'https://bloodbank-backend-701641288198.asia-south1.run.app' + viewingPrescription"
+                        alt="Prescription">
                     <iframe *ngIf="viewingPrescription?.endsWith('.pdf')" [src]="getPrescriptionUrl()"
                         class="pdf-iframe"></iframe>
                 </div>
                 <div class="prescription-actions">
-                    <a [href]="'http://localhost:8080' + viewingPrescription" download class="download-btn">⬇️
+                    <a [href]="'https://bloodbank-backend-701641288198.asia-south1.run.app' + viewingPrescription"
+                        download class="download-btn">⬇️
                         Download</a>
                 </div>
             </div>

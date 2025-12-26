@@ -51,7 +51,7 @@ export class ChatWidgetComponent {
         this.isLoading = true;
 
         // Call API
-        this.http.post<any>('http://localhost:8080/api/chat', { message: userMessage })
+        this.http.post<any>('https://bloodbank-backend-701641288198.asia-south1.run.app/api/chat', { message: userMessage })
             .subscribe({
                 next: (response) => {
                     this.messages.push({

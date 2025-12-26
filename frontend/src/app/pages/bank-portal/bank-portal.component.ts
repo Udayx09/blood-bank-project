@@ -868,6 +868,6 @@ export class BankPortalComponent implements OnInit {
 
     getPrescriptionUrl() {
         if (!this.viewingPrescription) return '';
-        return 'http://localhost:8080' + this.viewingPrescription;
+        return 'https://bloodbank-backend-701641288198.asia-south1.run.app' + this.viewingPrescription;
     }
 }

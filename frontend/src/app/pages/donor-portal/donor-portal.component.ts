@@ -267,7 +267,7 @@ export class DonorPortalComponent implements OnInit {
             if (this.donor.profilePhoto.startsWith('http')) {
                 return this.donor.profilePhoto;
             }
-            return 'http://localhost:8080' + this.donor.profilePhoto;
+            return 'https://bloodbank-backend-701641288198.asia-south1.run.app' + this.donor.profilePhoto;
         }
         return '';
     }
