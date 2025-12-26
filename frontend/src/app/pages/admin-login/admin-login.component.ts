@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
     selector: 'app-admin-login',
     standalone: true,
-    imports: [CommonModule, FormsModule, HttpClientModule],
+    imports: [CommonModule, FormsModule],
     template: `
         <div class="login-container">
             <div class="login-card">
@@ -16,21 +15,14 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
                 
                 <form (ngSubmit)="login()">
                     <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" [(ngModel)]="username" name="username" 
-                               placeholder="Enter username" required>
-                    </div>
-                    <div class="form-group">
                         <label>Password</label>
                         <input type="password" [(ngModel)]="password" name="password" 
-                               placeholder="Enter password" required>
+                               placeholder="Enter admin password" required>
                     </div>
                     
                     <p class="error" *ngIf="error">{{ error }}</p>
                     
-                    <button type="submit" class="login-btn" [disabled]="loading">
-                        {{ loading ? 'Logging in...' : 'Login' }}
-                    </button>
+                    <button type="submit" class="login-btn">Login</button>
                 </form>
                 
                 <a class="back-link" routerLink="/">← Back to Home</a>
@@ -83,47 +75,22 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
             transition: all 0.3s;
         }
         .login-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(79,195,247,0.4); }
-        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .back-link { display: block; margin-top: 1.5rem; color: #4fc3f7; text-decoration: none; }
     `]
 })
 export class AdminLoginComponent {
-    username = 'admin';
     password = '';
     error = '';
-    loading = false;
 
-    private apiUrl = 'https://bloodbank-backend-701641288198.asia-south1.run.app/api';
-
-    constructor(private router: Router, private http: HttpClient) { }
+    constructor(private router: Router) { }
 
     login() {
-        if (!this.username || !this.password) {
-            this.error = 'Please enter username and password';
-            return;
+        // Simple password check for testing
+        if (this.password === 'udaysproject18') {
+            localStorage.setItem('adminToken', 'admin-authenticated');
+            this.router.navigate(['/admin']);
+        } else {
+            this.error = 'Invalid password';
         }
-
-        this.loading = true;
-        this.error = '';
-
-        this.http.post<any>(`${this.apiUrl}/auth/admin/login`, {
-            username: this.username,
-            password: this.password
-        }).subscribe({
-            next: (response) => {
-                this.loading = false;
-                if (response.success) {
-                    localStorage.setItem('adminToken', response.token);
-                    localStorage.setItem('adminInfo', JSON.stringify(response.admin));
-                    this.router.navigate(['/admin']);
-                } else {
-                    this.error = response.error || 'Login failed';
-                }
-            },
-            error: (err) => {
-                this.loading = false;
-                this.error = err.error?.error || 'Login failed. Please try again.';
-            }
-        });
     }
 }
