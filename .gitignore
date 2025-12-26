@@ -44,6 +44,10 @@ backend/src/main/resources/application-local.properties
 # ================================
 whatsapp-service/.wwebjs_auth/
 whatsapp-service/.wwebjs_cache/
+server/.wwebjs_auth/
+server/.wwebjs_cache/
+**/.wwebjs_auth/
+**/.wwebjs_cache/
 
 # ================================
 # Logs
