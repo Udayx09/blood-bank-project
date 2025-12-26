@@ -1,0 +1,175 @@
+<div class="donor-login-page">
+    <div class="login-container">
+        <button class="back-btn" (click)="goHome()">← Back to Home</button>
+
+        <div class="login-card">
+            <div class="card-header">
+                <span class="logo">🩸</span>
+                <h1>Donor Portal</h1>
+                <p *ngIf="viewMode === 'login'">Login to manage your donations</p>
+                <p *ngIf="viewMode === 'register'">Create your donor account</p>
+                <p *ngIf="viewMode === 'set-password'">Set your password</p>
+                <p *ngIf="viewMode === 'forgot-password'">Reset your password</p>
+                <p *ngIf="viewMode === 'reset-password'">Enter OTP and new password</p>
+            </div>
+
+            <!-- Error/Success Messages -->
+            <div class="message error" *ngIf="errorMessage">{{ errorMessage }}</div>
+            <div class="message success" *ngIf="successMessage">{{ successMessage }}</div>
+
+            <!-- LOGIN VIEW -->
+            <form *ngIf="viewMode === 'login'" (ngSubmit)="login()" class="login-form">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" [(ngModel)]="loginData.phone" name="phone"
+                        placeholder="10 digit number (e.g. 7498497227)" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" [(ngModel)]="loginData.password" name="password"
+                        placeholder="Enter your password">
+                    <span class="helper-text">First time? Just enter your phone and click login.</span>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" [(ngModel)]="loginData.rememberMe" name="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                    <a class="forgot-link" (click)="switchToForgotPassword()">Forgot Password?</a>
+                </div>
+                <button type="submit" class="submit-btn" [disabled]="isLoading">
+                    {{ isLoading ? 'Logging in...' : 'Login' }}
+                </button>
+            </form>
+
+            <!-- REGISTER VIEW -->
+            <form *ngIf="viewMode === 'register'" (ngSubmit)="register()" class="register-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" [(ngModel)]="registerData.name" name="name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" [(ngModel)]="registerData.phone" name="phone" placeholder="10 digit phone"
+                            maxlength="10">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" [(ngModel)]="registerData.password" name="password"
+                            placeholder="Min 6 characters">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password *</label>
+                        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
+                            placeholder="Confirm password">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Blood Type *</label>
+                        <select [(ngModel)]="registerData.bloodType" name="bloodType">
+                            <option value="">Select blood type</option>
+                            <option *ngFor="let bt of bloodTypes" [value]="bt.value">{{ bt.label }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth *</label>
+                        <input type="date" [(ngModel)]="registerData.dateOfBirth" name="dateOfBirth">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" [(ngModel)]="registerData.city" name="city" value="solapur">
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" [(ngModel)]="registerData.weight" name="weight" min="50">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn" [disabled]="isLoading">
+                    {{ isLoading ? 'Creating account...' : 'Create Account' }}
+                </button>
+            </form>
+
+            <!-- SET PASSWORD VIEW -->
+            <form *ngIf="viewMode === 'set-password'" (ngSubmit)="setPassword()" class="set-password-form">
+                <p class="info-text">
+                    Welcome back! Please set a password for your account to continue.
+                </p>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" [(ngModel)]="setPasswordData.password" name="password"
+                        placeholder="Min 6 characters">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" [(ngModel)]="setPasswordData.confirmPassword" name="confirmPassword"
+                        placeholder="Confirm your password">
+                </div>
+                <button type="submit" class="submit-btn" [disabled]="isLoading">
+                    {{ isLoading ? 'Setting password...' : 'Set Password & Login' }}
+                </button>
+            </form>
+
+            <!-- FORGOT PASSWORD VIEW -->
+            <form *ngIf="viewMode === 'forgot-password'" (ngSubmit)="sendResetOtp()" class="forgot-password-form">
+                <p class="info-text">
+                    Enter your phone number and we'll send you an OTP to reset your password.
+                </p>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" [(ngModel)]="forgotPasswordData.phone" name="phone" placeholder="10 digit number"
+                        maxlength="10">
+                </div>
+                <button type="submit" class="submit-btn" [disabled]="isLoading">
+                    {{ isLoading ? 'Sending OTP...' : 'Send OTP' }}
+                </button>
+            </form>
+
+            <!-- RESET PASSWORD VIEW -->
+            <form *ngIf="viewMode === 'reset-password'" (ngSubmit)="resetPassword()" class="reset-password-form">
+                <p class="info-text">
+                    Enter the OTP sent to your phone and create a new password.
+                </p>
+                <div class="form-group">
+                    <label>OTP Code</label>
+                    <input type="text" [(ngModel)]="resetPasswordData.otp" name="otp" placeholder="Enter 6-digit OTP"
+                        maxlength="6">
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" [(ngModel)]="resetPasswordData.newPassword" name="newPassword"
+                        placeholder="Min 6 characters">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" [(ngModel)]="resetPasswordData.confirmPassword" name="confirmPassword"
+                        placeholder="Confirm your password">
+                </div>
+                <button type="submit" class="submit-btn" [disabled]="isLoading">
+                    {{ isLoading ? 'Resetting password...' : 'Reset Password & Login' }}
+                </button>
+            </form>
+
+            <!-- Toggle Links -->
+            <div class="toggle-view">
+                <p *ngIf="viewMode === 'login'">
+                    Don't have an account?
+                    <a (click)="switchToRegister()">Register here</a>
+                </p>
+                <p *ngIf="viewMode === 'register'">
+                    Already have an account?
+                    <a (click)="switchToLogin()">Login here</a>
+                </p>
+                <p
+                    *ngIf="viewMode === 'set-password' || viewMode === 'forgot-password' || viewMode === 'reset-password'">
+                    <a (click)="switchToLogin()">Back to Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

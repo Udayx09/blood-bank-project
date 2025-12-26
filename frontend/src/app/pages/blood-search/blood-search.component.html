@@ -1,0 +1,168 @@
+<div class="blood-search-page">
+    <!-- Header -->
+    <header class="search-header">
+        <div class="header-container">
+            <button class="back-btn" (click)="goBack()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span>Back</span>
+            </button>
+            <a href="/" class="logo">
+                <span class="logo-icon">❤</span>
+                <span class="logo-text">BloodBank</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="search-main">
+        <div class="search-container">
+            <!-- Hero Section -->
+            <div class="search-hero">
+                <h1 class="search-title">Find <span class="highlight">Blood</span> Near You</h1>
+                <p class="search-subtitle">Select a blood type to find available blood banks and hospitals in your area
+                </p>
+            </div>
+
+            <!-- Blood Type Selector -->
+            <div class="blood-type-section">
+                <h2 class="section-label">Select Blood Type</h2>
+                <div class="blood-type-grid">
+                    <button *ngFor="let type of bloodTypes" class="blood-type-card"
+                        [class.selected]="selectedBloodType === type" (click)="selectBloodType(type)">
+                        <span class="blood-drop">🩸</span>
+                        <span class="blood-type-label">{{ type }}</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="results-section" #resultsSection *ngIf="selectedBloodType">
+                <div class="results-header">
+                    <h2 class="results-title">
+                        Available for <span class="highlight">{{ selectedBloodType }}</span>
+                    </h2>
+                    <span class="results-count" *ngIf="!isSearching">
+                        {{ searchResults.length }} location{{ searchResults.length !== 1 ? 's' : '' }} found
+                    </span>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" *ngIf="isSearching">
+                    <div class="loader"></div>
+                    <p>Searching for available blood...</p>
+                </div>
+
+                <!-- Results List -->
+                <div class="results-grid" *ngIf="!isSearching && searchResults.length > 0">
+                    <div class="result-card" *ngFor="let bank of searchResults">
+                        <div class="card-header">
+                            <div class="bank-info">
+                                <h3 class="bank-name">{{ bank.name }}</h3>
+                                <div class="bank-meta">
+                                    <span class="distance">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </svg>
+                                        {{ bank.distance }}
+                                    </span>
+                                    <span class="rating">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                        </svg>
+                                        {{ bank.rating }}
+                                    </span>
+                                    <span class="status" [class.open]="bank.isOpen" [class.closed]="!bank.isOpen">
+                                        {{ bank.isOpen ? 'Open Now' : 'Closed' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="units-badge" [ngClass]="getUnitsColorClass(bank)">
+                                <span class="units-number">{{ getAvailableUnits(bank) }}</span>
+                                <span class="units-label">units</span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="contact-info">
+                                <p class="address">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                    {{ bank.address }}, {{ bank.city }}
+                                </p>
+                                <p class="phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                    </svg>
+                                    {{ bank.phone }}
+                                </p>
+                            </div>
+
+                            <div class="available-types">
+                                <span class="types-label">Available Types:</span>
+                                <div class="types-list">
+                                    <span *ngFor="let type of bank.bloodTypes" class="type-tag"
+                                        [class.current]="type === selectedBloodType">
+                                        {{ type }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button class="btn btn-secondary" (click)="contactBank(bank)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                                Contact
+                            </button>
+                            <button class="btn btn-primary" (click)="openReservationModal(bank)">
+                                Reserve Blood
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="!isSearching && searchResults.length === 0">
+                    <div class="empty-icon">🔍</div>
+                    <h3>No Results Found</h3>
+                    <p>No blood banks with {{ selectedBloodType }} blood type available in your area.</p>
+                    <p>Please try a different blood type or contact us for assistance.</p>
+                </div>
+            </div>
+
+            <!-- Initial State -->
+            <div class="initial-state" *ngIf="!selectedBloodType">
+                <div class="initial-icon">🩸</div>
+                <p>Select a blood type above to find available blood banks</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="search-footer">
+        <p>&copy; 2024 BloodBank. All rights reserved. | Emergency? Call <a href="tel:+1234567890">+1-234-567-8900</a>
+        </p>
+    </footer>
+</div>
+
+<!-- Reservation Modal -->
+<app-reservation-modal [isOpen]="isModalOpen" [bloodType]="selectedBloodType || ''" [bloodBank]="selectedBank"
+    (close)="closeModal()">
+</app-reservation-modal>

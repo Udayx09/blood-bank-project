@@ -1,0 +1,23 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+    <div class="nav-container">
+        <a routerLink="/" class="logo">
+            <span class="logo-icon">❤</span>
+            <span class="logo-text">BloodBank</span>
+        </a>
+
+        <ul class="nav-links" [class.active]="isMobileMenuOpen">
+            <li *ngFor="let link of navLinks">
+                <a (click)="navigateTo(link)">{{ link.label }}</a>
+            </li>
+        </ul>
+
+        <button class="nav-cta" (click)="goToSearch()">🔍 Search Blood</button>
+
+        <button class="mobile-menu-btn" [class.active]="isMobileMenuOpen" (click)="toggleMobileMenu()"
+            aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>

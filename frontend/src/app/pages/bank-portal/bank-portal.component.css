@@ -1,0 +1,2258 @@
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.toast-success {
+    background: linear-gradient(135deg, #2ed573, #26de81);
+    color: #fff;
+}
+
+.toast-error {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: #fff;
+}
+
+.toast-info {
+    background: linear-gradient(135deg, #00a8ff, #0097e6);
+    color: #fff;
+}
+
+.toast-icon {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.toast-message {
+    font-weight: 500;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.portal-container {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-header {
+    padding: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    font-size: 28px;
+}
+
+.bank-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.bank-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.portal-badge {
+    font-size: 11px;
+    color: #2ed573;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, #2ed573, #26de81);
+    color: #fff;
+}
+
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 71, 87, 0.2);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 10px;
+    color: #ff4757;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #ff4757;
+    color: #fff;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 24px 32px;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.content-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.welcome-text {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    gap: 16px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #2ed573;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-icon {
+    font-size: 32px;
+}
+
+.stat-info h3 {
+    font-size: 28px;
+    margin: 0;
+}
+
+.stat-info p {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+}
+
+/* Section */
+.section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.section h2 {
+    margin: 0 0 20px;
+    font-size: 18px;
+}
+
+/* Expiry Alerts */
+.expiry-section {
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    background: rgba(255, 193, 7, 0.05);
+}
+
+.expiry-alerts {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.expiry-alert {
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid;
+}
+
+.expiry-alert.expired {
+    background: rgba(255, 71, 87, 0.15);
+    border-color: rgba(255, 71, 87, 0.4);
+}
+
+.expiry-alert.critical {
+    background: rgba(255, 140, 0, 0.15);
+    border-color: rgba(255, 140, 0, 0.4);
+}
+
+.expiry-alert.warning {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.4);
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.alert-icon {
+    font-size: 20px;
+}
+
+.alert-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.expiry-alert.expired .alert-title {
+    color: #ff4757;
+}
+
+.expiry-alert.critical .alert-title {
+    color: #ff8c00;
+}
+
+.expiry-alert.warning .alert-title {
+    color: #ffc107;
+}
+
+.alert-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.alert-item .blood-badge {
+    font-size: 12px;
+    padding: 6px 10px;
+}
+
+.alert-item .units {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.alert-item .days {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recent-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+.blood-badge {
+    background: linear-gradient(135deg, #e63946, #d62839);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-name {
+    font-weight: 600;
+}
+
+.date {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.status-confirmed {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.status-completed {
+    background: rgba(0, 168, 255, 0.2);
+    color: #00a8ff;
+}
+
+.status-cancelled {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+}
+
+.urgency-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.urgency-normal {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.urgency-urgent {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.urgency-emergency {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+}
+
+/* Table */
+.reservations-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.reservations-table th,
+.reservations-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reservations-table th {
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 12px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.patient-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-info small {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 6px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.action-btn.complete {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.action-btn.complete:hover {
+    background: #2ed573;
+    color: #fff;
+}
+
+.action-btn.cancel {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+}
+
+.action-btn.cancel:hover {
+    background: #ff4757;
+    color: #fff;
+}
+
+/* Inventory */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.inventory-card {
+    background: rgba(230, 57, 70, 0.15);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+}
+
+.blood-type {
+    font-size: 28px;
+    font-weight: 700;
+    color: #e63946;
+    margin-bottom: 16px;
+}
+
+.units-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.adjust-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.adjust-btn:hover {
+    background: #e63946;
+}
+
+.units-count {
+    font-size: 28px;
+    font-weight: 700;
+    min-width: 50px;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+/* Increase animation - pop up and green */
+.units-count.animate-increase {
+    animation: popUp 0.3s ease;
+    color: #2ed573;
+}
+
+/* Decrease animation - shrink down and red */
+.units-count.animate-decrease {
+    animation: shrinkDown 0.3s ease;
+    color: #ff4757;
+}
+
+@keyframes popUp {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shrinkDown {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.6);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.units-label {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+
+    .stats-grid,
+    .inventory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .stats-grid,
+    .inventory-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Inventory Header */
+.inventory-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.add-inventory-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #2ed573, #26de81);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-inventory-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(46, 213, 115, 0.4);
+}
+
+.empty-state .add-inventory-btn {
+    margin-top: 16px;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+/* Inline Form Error Message */
+.form-error {
+    background: rgba(255, 71, 87, 0.15);
+    border: 1px solid rgba(255, 71, 87, 0.4);
+    color: #ff6b81;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: shakeError 0.4s ease;
+}
+
+@keyframes shakeError {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-6px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(6px);
+    }
+}
+
+.modal-body .form-group {
+    margin-bottom: 20px;
+}
+
+.modal-body .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.modal-body label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.modal-body input,
+.modal-body select {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.modal-body input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.modal-body input:focus,
+.modal-body select:focus {
+    outline: none;
+    border-color: #2ed573;
+    box-shadow: 0 0 0 3px rgba(46, 213, 115, 0.2);
+}
+
+.modal-body select option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: flex-end;
+}
+
+.cancel-btn {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.submit-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #2ed573, #26de81);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(46, 213, 115, 0.4);
+}
+
+/* =============== RECORD DONATION FORM =============== */
+
+.modal-wide {
+    max-width: 560px !important;
+}
+
+.donation-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-body h3 {
+    color: #ffffff !important;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.phone-lookup-group {
+    width: 100%;
+}
+
+.phone-lookup-row {
+    display: flex;
+    gap: 12px;
+}
+
+.phone-lookup-row input {
+    flex: 1;
+}
+
+.lookup-btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.lookup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Donor Found Card */
+.donor-found-card {
+    background: rgba(46, 213, 115, 0.15);
+    border: 1px solid rgba(46, 213, 115, 0.4);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.donor-found-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2ed573;
+    margin-bottom: 12px;
+}
+
+.donor-found-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.donor-info-item {
+    display: flex;
+    gap: 12px;
+}
+
+.info-label {
+    color: rgba(255, 255, 255, 0.6);
+    min-width: 80px;
+}
+
+.info-value {
+    color: #fff;
+    font-weight: 500;
+}
+
+.info-value.blood-type {
+    color: #e63946;
+    font-weight: 700;
+}
+
+.info-value.warning {
+    color: #ffc107;
+}
+
+/* New Donor Section */
+.new-donor-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.form-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+}
+
+/* =============== DONOR SEARCH VIEW =============== */
+
+.donors-view {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.search-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-group label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.filter-group select {
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filter-group select option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.refresh-btn {
+    padding: 10px 20px;
+    background: rgba(0, 168, 255, 0.2);
+    border: 1px solid rgba(0, 168, 255, 0.3);
+    border-radius: 8px;
+    color: #00a8ff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.refresh-btn:hover:not(:disabled) {
+    background: #00a8ff;
+    color: #fff;
+}
+
+.refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.donors-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.donors-section h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.loading-inline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 20px 0;
+}
+
+.spinner-small {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #2ed573;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.donors-table-container {
+    overflow-x: auto;
+}
+
+.donors-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.donors-table th,
+.donors-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.donors-table th {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.donors-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.send-request-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #00a8ff, #0097e6);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.send-request-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 168, 255, 0.4);
+}
+
+.send-request-btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.request-history {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.request-history h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+.history-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.donor-name {
+    font-weight: 500;
+}
+
+.blood-badge.small {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+.history-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.req-date {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.status-expired {
+    background: rgba(100, 100, 100, 0.2);
+    color: #888;
+}
+
+.empty-state.small {
+    padding: 20px;
+}
+
+.empty-state small {
+    display: block;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ==================== ANALYTICS VIEW ==================== */
+.analytics-view {
+    animation: fadeIn 0.3s ease;
+}
+
+.analytics-view h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-view .view-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.chart-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-card h3 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.chart-card .chart-description {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.chart-container {
+    min-height: 300px;
+}
+
+.chart-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.chart-loading .loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #2ed573;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===================== BLOOD UNITS SECTION ===================== */
+
+/* Expiry Summary Cards */
+.expiry-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #1a1a2e;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-card.total {
+    border-left: 4px solid #4fc3f7;
+}
+
+.summary-card.critical {
+    border-left: 4px solid #ef5350;
+    background: rgba(239, 83, 80, 0.1);
+}
+
+.summary-card.warning {
+    border-left: 4px solid #ffb74d;
+    background: rgba(255, 183, 77, 0.1);
+}
+
+.summary-card.platelets {
+    border-left: 4px solid #ff6b6b;
+    background: rgba(255, 107, 107, 0.15);
+    animation: pulse-critical 1.5s infinite;
+}
+
+.summary-card.clickable {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summary-card.clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse-critical {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.summary-icon {
+    font-size: 2rem;
+}
+
+.summary-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.summary-label {
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+/* Units Toolbar */
+.units-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filters {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.filters select {
+    padding: 0.6rem 1rem;
+    background: #1a1a2e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.filters select:focus {
+    outline: none;
+    border-color: #4fc3f7;
+}
+
+.add-unit-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-unit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
+}
+
+/* Units Table */
+.units-table-container {
+    background: #1a1a2e;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.loading-units {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+    color: #94a3b8;
+}
+
+.units-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.units-table th,
+.units-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.units-table th {
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.units-table tbody tr {
+    transition: background 0.2s;
+}
+
+.units-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.unit-number {
+    font-family: 'Courier New', monospace;
+    color: #4fc3f7;
+}
+
+.blood-type {
+    font-weight: 700;
+    color: #ef5350;
+}
+
+.days-left {
+    font-weight: 600;
+}
+
+.days-left.critical {
+    color: #ef5350;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Row status colors */
+.status-critical {
+    background: rgba(239, 83, 80, 0.1) !important;
+}
+
+.status-warning {
+    background: rgba(255, 183, 77, 0.1) !important;
+}
+
+.status-caution {
+    background: rgba(255, 235, 59, 0.05) !important;
+}
+
+.status-expired {
+    background: rgba(158, 158, 158, 0.1) !important;
+    opacity: 0.6;
+}
+
+/* Unit Status Badge */
+.unit-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.unit-status.status-available {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.unit-status.status-reserved {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+.unit-status.status-used {
+    background: rgba(33, 150, 243, 0.2);
+    color: #2196f3;
+}
+
+.unit-status.status-expired {
+    background: rgba(158, 158, 158, 0.2);
+    color: #9e9e9e;
+}
+
+.unit-status.status-discarded {
+    background: rgba(117, 117, 117, 0.2);
+    color: #757575;
+}
+
+/* Action Buttons */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.action-btn.use {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.action-btn.use:hover {
+    background: rgba(76, 175, 80, 0.4);
+}
+
+.action-btn.reserve {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+.action-btn.reserve:hover {
+    background: rgba(255, 152, 0, 0.4);
+}
+
+.action-btn.discard {
+    background: rgba(158, 158, 158, 0.2);
+    color: #9e9e9e;
+}
+
+.action-btn.discard:hover {
+    background: rgba(158, 158, 158, 0.4);
+}
+
+.action-btn.unreserve {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.action-btn.unreserve:hover {
+    background: rgba(76, 175, 80, 0.4);
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 2rem;
+    color: #94a3b8;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: #1a1a2e;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-content .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.close-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.modal-body label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.modal-body input,
+.modal-body select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.modal-body input:focus,
+.modal-body select:focus {
+    outline: none;
+    border-color: #4fc3f7;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
+}
+
+/* ===================== RECORD DONATION STYLES ===================== */
+
+.toolbar-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.record-donation-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ef5350, #e53935);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.record-donation-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 83, 80, 0.4);
+}
+
+.modal-wide {
+    max-width: 650px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-wide .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+    padding: 1rem 1.5rem;
+}
+
+.modal-wide .form-group {
+    margin-bottom: 0.75rem;
+}
+
+.modal-wide label {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+}
+
+.modal-wide input,
+.modal-wide select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+.modal-hint {
+    color: #94a3b8;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.label-row label {
+    margin-bottom: 0;
+}
+
+.label-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.select-all-btn {
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #4fc3f7;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.select-all-btn:hover {
+    background: rgba(79, 195, 247, 0.2);
+    border-color: #4fc3f7;
+}
+
+.selected-count {
+    background: #4caf50;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+.component-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.component-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.component-checkbox:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.component-checkbox.selected {
+    background: rgba(76, 175, 80, 0.15);
+    border-color: #4caf50;
+}
+
+.checkbox-icon {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #4caf50;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.component-checkbox.selected .checkbox-icon {
+    background: #4caf50;
+    border-color: #4caf50;
+    color: #fff;
+}
+
+.component-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.component-name {
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.component-days {
+    color: #94a3b8;
+    font-size: 0.7rem;
+}
+
+.selected-summary {
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #4caf50;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Donation Form Sections */
+.donation-section {
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.75rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.form-divider {
+    border: none;
+    border-top: 2px dashed #e2e8f0;
+    margin: 1.5rem 0;
+}
+
+/* Phone Lookup Styles */
+.phone-lookup-group {
+    flex: 1;
+}
+
+.phone-lookup-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.phone-lookup-row input {
+    flex: 1;
+}
+
+.lookup-btn {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.lookup-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Donor Found Card */
+.donor-found-card {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+    border: 2px solid #4caf50;
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.donor-found-header {
+    font-weight: 600;
+    color: #4caf50;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.donor-found-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.donor-info-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.info-label {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.info-value.blood-type {
+    background: #ef5350;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.info-value.warning {
+    color: #f59e0b;
+}
+
+/* Pending Donations Section */
+.pending-donations-section {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05));
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pending-donations-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.pending-donations-section h3 {
+    margin: 0;
+    color: #f57c00;
+    font-size: 1.1rem;
+}
+
+.pending-count {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.pending-donations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.pending-donation-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pending-donor-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.pending-donor-info .donor-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.blood-type-badge {
+    background: #ef5350;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pending-date {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+}
+
+.add-components-btn {
+    width: 100%;
+    padding: 0.5rem;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-components-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+}
+
+/* Donation Info Card */
+.donation-info-card {
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.donation-info-card p {
+    margin: 0;
+    color: #1e293b;
+    font-size: 0.85rem;
+}
+
+.new-donor-section {
+    background: rgba(99, 102, 241, 0.05);
+    border: 1px dashed rgba(99, 102, 241, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+/* Prescription Link in Reservations Table */
+.prescription-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: #f0fdf4;
+    color: #16a34a;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.prescription-link:hover {
+    background: #16a34a;
+    color: white;
+}
+
+.no-prescription {
+    color: #9ca3af;
+}
+
+.prescription-link.viewed {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.view-first-hint {
+    font-size: 1rem;
+    cursor: help;
+    opacity: 0.6;
+}
+
+/* Prescription Viewer Modal */
+.prescription-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.prescription-modal {
+    background: white;
+    border-radius: 12px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.prescription-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #ef4444;
+    color: white;
+    border: 3px solid white;
+    font-size: 1.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.prescription-close-btn:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+}
+
+.prescription-content {
+    padding: 1rem;
+    overflow: auto;
+    max-height: 70vh;
+}
+
+.prescription-content img {
+    max-width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.prescription-content .pdf-iframe {
+    width: 80vw;
+    height: 70vh;
+    border: none;
+}
+
+.prescription-actions {
+    padding: 1rem;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.download-btn:hover {
+    background: #2563eb;
+}

@@ -1,0 +1,590 @@
+<!-- Toast Notification -->
+<div class="toast" *ngIf="toast" [class]="'toast-' + toast.type">
+    <span class="toast-icon">{{ toast.type === 'success' ? '✓' : (toast.type === 'error' ? '✗' : 'ℹ') }}</span>
+    <span class="toast-message">{{ toast.message }}</span>
+</div>
+
+<div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                <span class="logo-text">Blood Bank</span>
+            </div>
+            <span class="admin-badge">Admin</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="nav-item" [class.active]="activeView === 'dashboard'" (click)="setActiveView('dashboard')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a class="nav-item" [class.active]="activeView === 'reservations'" (click)="setActiveView('reservations')">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Reservations</span>
+            </a>
+            <a class="nav-item" [class.active]="activeView === 'bloodbanks'" (click)="setActiveView('bloodbanks')">
+                <span class="nav-icon">🏥</span>
+                <span class="nav-text">Blood Banks</span>
+            </a>
+            <a class="nav-item" [class.active]="activeView === 'inventory'" (click)="setActiveView('inventory')">
+                <span class="nav-icon">🩸</span>
+                <span class="nav-text">Inventory</span>
+            </a>
+            <a class="nav-item" [class.active]="activeView === 'analytics'" (click)="setActiveView('analytics')">
+                <span class="nav-icon">📈</span>
+                <span class="nav-text">Analytics</span>
+            </a>
+            <a class="nav-item" [class.active]="activeView === 'donors'" (click)="setActiveView('donors')">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Donors</span>
+            </a>
+            <a class="nav-item" href="http://localhost:3001/api/whatsapp/qr" target="_blank">
+                <span class="nav-icon">📱</span>
+                <span class="nav-text">WhatsApp</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a routerLink="/" class="back-link">
+                <span>←</span> Back to Site
+            </a>
+            <button class="logout-btn" (click)="logout()">
+                🚪 Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="content-header">
+            <h1>{{ activeView === 'dashboard' ? 'Dashboard' : (activeView === 'reservations' ? 'Reservations' :
+                (activeView === 'bloodbanks' ? 'Blood Banks' : 'Inventory')) }}</h1>
+            <div class="header-actions">
+                <button class="refresh-btn" (click)="loadStats(); loadReservations()" [disabled]="loading"
+                    *ngIf="activeView === 'dashboard'">
+                    🔄 Refresh
+                </button>
+                <div class="whatsapp-status" *ngIf="stats">
+                    <span class="status-dot" [class.connected]="stats.whatsapp.connected"></span>
+                    <span>WhatsApp: {{ stats.whatsapp.connected ? 'Connected' : 'Disconnected' }}</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <div class="loading" *ngIf="loading">
+            <div class="spinner"></div>
+            <p>Loading dashboard...</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="error" *ngIf="error">
+            <p>{{ error }}</p>
+            <button (click)="loadStats()">Retry</button>
+        </div>
+
+        <!-- Dashboard View -->
+        <div class="dashboard" *ngIf="activeView === 'dashboard' && stats && !loading">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card" (click)="setActiveView('reservations')">
+                    <div class="stat-icon reservations">📋</div>
+                    <div class="stat-info">
+                        <h3 class="counter">{{ animatedStats.totalReservations }}</h3>
+                        <p>Total Reservations</p>
+                    </div>
+                </div>
+
+                <div class="stat-card" (click)="setActiveView('reservations'); filterReservations('pending')">
+                    <div class="stat-icon pending">⏳</div>
+                    <div class="stat-info">
+                        <h3 class="counter">{{ animatedStats.pendingReservations }}</h3>
+                        <p>Pending Requests</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon banks">🏥</div>
+                    <div class="stat-info">
+                        <h3 class="counter">{{ animatedStats.bloodBanks }}</h3>
+                        <p>Blood Banks</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon units">🩸</div>
+                    <div class="stat-info">
+                        <h3 class="counter">{{ animatedStats.bloodUnits }}</h3>
+                        <p>Blood Units</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blood Type Distribution -->
+            <div class="section blood-types">
+                <h2>Blood Type Distribution</h2>
+                <div class="blood-type-grid">
+                    <div class="blood-type-card" *ngFor="let item of stats.bloodUnits.byType">
+                        <span class="type">{{ item.type }}</span>
+                        <span class="units">{{ item.units }} units</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Alerts -->
+            <div class="section low-stock-alerts" *ngIf="stats.lowStockAlerts && stats.lowStockAlerts.length > 0">
+                <h2>🚨 Low Stock Alerts</h2>
+                <div class="alerts-list">
+                    <div class="alert-item" *ngFor="let alert of stats.lowStockAlerts"
+                        [class.critical]="alert.isCritical">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-info">
+                            <span class="blood-badge">{{ alert.bloodType }}</span>
+                            <span class="bank-name">{{ alert.bloodBankName }}</span>
+                        </div>
+                        <div class="alert-units" [class.critical]="alert.isCritical">
+                            {{ alert.unitsAvailable }} units left
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="section recent-activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-list" *ngIf="stats.recentActivity.length > 0">
+                    <div class="activity-item" *ngFor="let activity of stats.recentActivity">
+                        <div class="activity-icon">{{ activity.bloodType }}</div>
+                        <div class="activity-info">
+                            <p class="activity-title">{{ activity.patientName }}</p>
+                            <p class="activity-subtitle">{{ activity.bloodBankName }}</p>
+                        </div>
+                        <div class="activity-meta">
+                            <span class="status-badge" [ngClass]="getStatusClass(activity.status)">
+                                {{ activity.status }}
+                            </span>
+                            <span class="activity-time">{{ formatDate(activity.createdAt) }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-activity" *ngIf="stats.recentActivity.length === 0">
+                    <p>No recent activity</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservations View -->
+        <div class="reservations-view" *ngIf="activeView === 'reservations'">
+            <!-- Search -->
+            <div class="reservations-header">
+                <div class="search-box">
+                    <input type="text" placeholder="Search by patient, blood type, or bank..." [(ngModel)]="searchQuery"
+                        (input)="onSearchChange()" />
+                </div>
+            </div>
+
+            <!-- Filter Tabs - Simplified: Pending → Completed -->
+            <div class="filter-tabs">
+                <button class="filter-tab" [class.active]="activeFilter === 'all'" (click)="filterReservations('all')">
+                    All ({{ getFilterCount('all') }})
+                </button>
+                <button class="filter-tab" [class.active]="activeFilter === 'pending'"
+                    (click)="filterReservations('pending')">
+                    ⏳ Pending ({{ getFilterCount('pending') }})
+                </button>
+                <button class="filter-tab" [class.active]="activeFilter === 'completed'"
+                    (click)="filterReservations('completed')">
+                    ✅ Completed ({{ getFilterCount('completed') }})
+                </button>
+                <button class="filter-tab" [class.active]="activeFilter === 'cancelled'"
+                    (click)="filterReservations('cancelled')">
+                    ❌ Cancelled ({{ getFilterCount('cancelled') }})
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" *ngIf="reservationsLoading">
+                <div class="spinner"></div>
+                <p>Loading reservations...</p>
+            </div>
+
+            <!-- Table -->
+            <div class="reservations-table-container" *ngIf="!reservationsLoading">
+                <table class="reservations-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Patient</th>
+                            <th>Blood</th>
+                            <th>Units</th>
+                            <th>Blood Bank</th>
+                            <th>Urgency</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let res of filteredReservations">
+                            <td class="id-cell">#{{ res.id }}</td>
+                            <td>
+                                <div class="patient-info">
+                                    <span class="patient-name">{{ res.patientName }}</span>
+                                    <span class="patient-phone">{{ res.whatsappNumber }}</span>
+                                </div>
+                            </td>
+                            <td><span class="blood-badge">{{ res.bloodType }}</span></td>
+                            <td>{{ res.unitsNeeded }}</td>
+                            <td>{{ res.bloodBankName }}</td>
+                            <td>
+                                <span class="urgency-badge" [class]="'urgency-' + res.urgencyLevel">
+                                    {{ res.urgencyLevel }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge" [ngClass]="getStatusClass(res.status)">
+                                    {{ res.status }}
+                                </span>
+                            </td>
+                            <td>{{ formatDate(res.createdAt) }}</td>
+                            <td class="actions-cell">
+                                <!-- Complete button for pending -->
+                                <button class="action-btn complete" *ngIf="res.status === 'pending'"
+                                    (click)="updateStatus(res, 'completed')" title="Mark Completed (sends WhatsApp)">
+                                    ✓
+                                </button>
+                                <!-- Cancel button -->
+                                <button class="action-btn cancel" *ngIf="res.status === 'pending'"
+                                    (click)="updateStatus(res, 'cancelled')" title="Cancel (sends WhatsApp)">
+                                    ✗
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="filteredReservations.length === 0">
+                    <div class="empty-icon">📋</div>
+                    <p>No reservations found</p>
+                    <small>Reservations will appear here when patients make requests</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Banks View -->
+        <div class="bloodbanks-view" *ngIf="activeView === 'bloodbanks'">
+            <!-- Header with Add Button -->
+            <div class="bloodbanks-header">
+                <button class="add-btn" (click)="openAddBloodBankForm()">
+                    + Add Blood Bank
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" *ngIf="bloodBanksLoading">
+                <div class="spinner"></div>
+                <p>Loading blood banks...</p>
+            </div>
+
+            <!-- Table -->
+            <div class="bloodbanks-table-container" *ngIf="!bloodBanksLoading">
+                <table class="bloodbanks-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let bank of bloodBanks">
+                            <td class="id-cell">#{{ bank.id }}</td>
+                            <td class="name-cell">{{ bank.name }}</td>
+                            <td>{{ bank.address }}</td>
+                            <td>{{ bank.city }}</td>
+                            <td>{{ bank.phone }}</td>
+                            <td>
+                                <button class="status-toggle" [class.open]="bank.isOpen"
+                                    (click)="toggleBloodBankStatus(bank)">
+                                    {{ bank.isOpen ? 'Open' : 'Closed' }}
+                                </button>
+                            </td>
+                            <td class="actions-cell">
+                                <button class="action-btn edit" (click)="openEditBloodBankForm(bank)" title="Edit">
+                                    ✏️
+                                </button>
+                                <button class="action-btn delete" (click)="deleteBloodBank(bank)" title="Delete">
+                                    🗑️
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="bloodBanks.length === 0">
+                    <div class="empty-icon">🏥</div>
+                    <p>No blood banks added yet</p>
+                    <small>Click "Add Blood Bank" to create one</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory View -->
+        <div class="inventory-view" *ngIf="activeView === 'inventory'">
+            <!-- Inventory Header with Refresh -->
+            <div class="inventory-header">
+                <p class="last-updated">Click refresh to update data</p>
+                <button class="refresh-btn" (click)="loadInventory()" [disabled]="inventoryLoading">
+                    🔄 Refresh
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" *ngIf="inventoryLoading">
+                <div class="spinner"></div>
+                <p>Loading inventory...</p>
+            </div>
+
+            <!-- Inventory Grid -->
+            <div class="inventory-banks" *ngIf="!inventoryLoading">
+                <div class="inventory-bank-card" *ngFor="let bank of inventoryData">
+                    <h3>{{ bank.name }}</h3>
+                    <div class="inventory-items" *ngIf="bank.inventory.length > 0">
+                        <div class="inventory-item" *ngFor="let item of bank.inventory">
+                            <span class="blood-badge">{{ item.bloodType }}</span>
+                            <div class="units-control">
+                                <button class="adjust-btn"
+                                    (click)="updateInventoryWithAnimation(bank.id, item.bloodType, item.units - 1, 'decrease', item)">-</button>
+                                <span class="units-count" [class.animate-increase]="item.animating === 'increase'"
+                                    [class.animate-decrease]="item.animating === 'decrease'">{{ item.units }}</span>
+                                <button class="adjust-btn"
+                                    (click)="updateInventoryWithAnimation(bank.id, item.bloodType, item.units + 1, 'increase', item)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-inventory" *ngIf="bank.inventory.length === 0">
+                        <p>No inventory data</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" *ngIf="!inventoryLoading && inventoryData.length === 0">
+                <div class="empty-icon">🩸</div>
+                <p>No inventory data available</p>
+                <small>Add blood banks first to manage inventory</small>
+            </div>
+        </div>
+
+        <!-- Blood Bank Form Modal -->
+        <div class="modal-overlay" *ngIf="showBloodBankForm" (click)="closeBloodBankForm()">
+            <div class="modal" (click)="$event.stopPropagation()">
+                <div class="modal-header">
+                    <h2>{{ editingBloodBank ? 'Edit Blood Bank' : 'Add Blood Bank' }}</h2>
+                    <button class="close-btn" (click)="closeBloodBankForm()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" [(ngModel)]="bloodBankForm.name" placeholder="Enter blood bank name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Address *</label>
+                        <input type="text" [(ngModel)]="bloodBankForm.address" placeholder="Enter address" />
+                    </div>
+                    <div class="form-group">
+                        <label>City *</label>
+                        <input type="text" [(ngModel)]="bloodBankForm.city" placeholder="Enter city" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="text" [(ngModel)]="bloodBankForm.phone" placeholder="10 digit phone number"
+                            maxlength="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" [(ngModel)]="bloodBankForm.email" placeholder="Enter email (optional)" />
+                    </div>
+                    <div class="form-group checkbox">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="bloodBankForm.isOpen" />
+                            Open for business
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" (click)="closeBloodBankForm()">Cancel</button>
+                    <button class="btn-save" (click)="saveBloodBank()">
+                        {{ editingBloodBank ? 'Update' : 'Create' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal-overlay delete-modal" *ngIf="showDeleteConfirm" (click)="cancelDelete()">
+            <div class="modal delete-confirm-modal" (click)="$event.stopPropagation()">
+                <div class="modal-header delete-header">
+                    <h2>⚠️ Confirm Delete</h2>
+                </div>
+                <div class="modal-body delete-body">
+                    <p>Are you sure you want to delete <strong>{{ deleteTarget?.name }}</strong>?</p>
+                    <p class="delete-warning">This will also delete all associated inventory and reservations.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" (click)="cancelDelete()">Cancel</button>
+                    <button class="btn-delete" (click)="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div class="analytics-view" *ngIf="activeView === 'analytics'">
+            <div class="view-header">
+                <h1>📈 System Analytics</h1>
+                <p class="view-subtitle">Overall blood bank network performance and trends</p>
+            </div>
+
+            <div class="charts-grid">
+                <!-- Blood Type Distribution -->
+                <div class="chart-card">
+                    <h3>🩸 Donor Blood Types</h3>
+                    <p class="chart-description">Verified donors by blood type</p>
+                    <div class="chart-container"
+                        *ngIf="bloodTypeChartData.labels && bloodTypeChartData.labels.length > 0">
+                        <canvas baseChart [data]="bloodTypeChartData" [options]="bloodTypeChartOptions" type="doughnut">
+                        </canvas>
+                    </div>
+                    <div class="chart-loading"
+                        *ngIf="!bloodTypeChartData.labels || bloodTypeChartData.labels.length === 0">
+                        <div class="loader"></div>
+                        <p>Loading chart...</p>
+                    </div>
+                </div>
+
+                <!-- Registrations Trend -->
+                <div class="chart-card">
+                    <h3>👥 Donor Registrations</h3>
+                    <p class="chart-description">New donor sign-ups (last 5 weeks)</p>
+                    <div class="chart-container"
+                        *ngIf="registrationsChartData.labels && registrationsChartData.labels.length > 0">
+                        <canvas baseChart [data]="registrationsChartData" [options]="registrationsChartOptions"
+                            type="line">
+                        </canvas>
+                    </div>
+                    <div class="chart-loading"
+                        *ngIf="!registrationsChartData.labels || registrationsChartData.labels.length === 0">
+                        <div class="loader"></div>
+                        <p>Loading chart...</p>
+                    </div>
+                </div>
+
+                <!-- Donations Trend -->
+                <div class="chart-card">
+                    <h3>📊 Donations Trend</h3>
+                    <p class="chart-description">System-wide donations (last 7 days)</p>
+                    <div class="chart-container"
+                        *ngIf="adminDonationsChartData.labels && adminDonationsChartData.labels.length > 0">
+                        <canvas baseChart [data]="adminDonationsChartData" [options]="adminDonationsChartOptions"
+                            type="line">
+                        </canvas>
+                    </div>
+                    <div class="chart-loading"
+                        *ngIf="!adminDonationsChartData.labels || adminDonationsChartData.labels.length === 0">
+                        <div class="loader"></div>
+                        <p>Loading chart...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donors View -->
+        <div class="donors-view" *ngIf="activeView === 'donors'">
+            <div class="view-header">
+                <h1>👥 Donor Management</h1>
+                <p class="view-subtitle">View all registered donors and their donation history</p>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" *ngIf="donorsLoading">
+                <div class="spinner"></div>
+                <p>Loading donors...</p>
+            </div>
+
+            <!-- Stats Summary -->
+            <div class="donors-stats" *ngIf="!donorsLoading">
+                <div class="stat-card">
+                    <div class="stat-icon donors">👥</div>
+                    <div class="stat-info">
+                        <h3>{{ donors.length }}</h3>
+                        <p>Total Donors</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon eligible">✅</div>
+                    <div class="stat-info">
+                        <h3>{{ eligibleDonorsCount }}</h3>
+                        <p>Eligible Now</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon verified">🔒</div>
+                    <div class="stat-info">
+                        <h3>{{ verifiedDonorsCount }}</h3>
+                        <p>Verified</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="donors-table-container" *ngIf="!donorsLoading">
+                <table class="donors-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Blood Type</th>
+                            <th>City</th>
+                            <th>Registered</th>
+                            <th>Last Donation</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let donor of donors">
+                            <td class="id-cell">#{{ donor.id }}</td>
+                            <td class="name-cell">{{ donor.name }}</td>
+                            <td>{{ donor.phone }}</td>
+                            <td><span class="blood-badge">{{ donor.bloodType }}</span></td>
+                            <td>{{ donor.city }}</td>
+                            <td>{{ donor.createdAt ? formatDate(donor.createdAt) : 'N/A' }}</td>
+                            <td>{{ donor.lastDonationDate || 'Never' }}</td>
+                            <td>
+                                <span class="status-badge" [class.status-eligible]="donor.eligible"
+                                    [class.status-not-eligible]="!donor.eligible">
+                                    {{ donor.eligible ? 'Eligible' : donor.daysUntilEligible + ' days left' }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="!donors.length">
+                    <div class="empty-icon">👥</div>
+                    <p>No donors registered yet</p>
+                    <small>Donors will appear here when they register</small>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

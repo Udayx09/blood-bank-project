@@ -1,0 +1,227 @@
+<div class="donor-registration-page">
+    <div class="registration-container">
+        <!-- Header -->
+        <div class="registration-header">
+            <button class="back-btn" (click)="goHome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back
+            </button>
+            <div class="logo">
+                <span class="logo-icon">🩸</span>
+                <span class="logo-text">Become a Donor</span>
+            </div>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step" [class.active]="currentStep === 'phone'" [class.completed]="currentStep !== 'phone'">
+                <div class="step-number">1</div>
+                <span class="step-label">Phone</span>
+            </div>
+            <div class="step-line" [class.active]="currentStep !== 'phone'"></div>
+            <div class="step" [class.active]="currentStep === 'otp'"
+                [class.completed]="currentStep === 'form' || currentStep === 'success'">
+                <div class="step-number">2</div>
+                <span class="step-label">Verify</span>
+            </div>
+            <div class="step-line" [class.active]="currentStep === 'form' || currentStep === 'success'"></div>
+            <div class="step" [class.active]="currentStep === 'form'" [class.completed]="currentStep === 'success'">
+                <div class="step-number">3</div>
+                <span class="step-label">Details</span>
+            </div>
+        </div>
+
+        <!-- Step 1: Phone Number -->
+        <div class="step-content" *ngIf="currentStep === 'phone'">
+            <div class="step-header">
+                <h2>📱 Enter Your WhatsApp Number</h2>
+                <p>We'll send you a verification code</p>
+            </div>
+
+            <div class="form-group">
+                <label>WhatsApp Number</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">📱</span>
+                    <span class="country-code">+91</span>
+                    <input type="tel" [(ngModel)]="phoneNumber" placeholder="Enter 10-digit number" maxlength="10"
+                        (keyup.enter)="sendOtp()">
+                </div>
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage">
+                ⚠️ {{ errorMessage }}
+            </div>
+
+            <button class="btn-primary" (click)="sendOtp()" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Send OTP</span>
+                <span *ngIf="isLoading">Sending...</span>
+            </button>
+        </div>
+
+        <!-- Step 2: OTP Verification -->
+        <div class="step-content" *ngIf="currentStep === 'otp'">
+            <div class="step-header">
+                <h2>🔐 Enter Verification Code</h2>
+                <p>Code sent to {{ phoneNumber }}</p>
+            </div>
+
+            <div class="form-group">
+                <label>6-Digit OTP</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">🔢</span>
+                    <input type="text" [(ngModel)]="otp" placeholder="Enter OTP" maxlength="6"
+                        (keyup.enter)="verifyOtp()">
+                </div>
+            </div>
+
+            <div class="resend-section">
+                <span *ngIf="resendTimer > 0">Resend OTP in {{ resendTimer }}s</span>
+                <button class="btn-link" *ngIf="resendTimer === 0" (click)="resendOtp()">
+                    Resend OTP
+                </button>
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage">
+                ⚠️ {{ errorMessage }}
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" (click)="goBack()">Back</button>
+                <button class="btn-primary" (click)="verifyOtp()" [disabled]="isLoading">
+                    <span *ngIf="!isLoading">Verify</span>
+                    <span *ngIf="isLoading">Verifying...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Registration Form -->
+        <div class="step-content" *ngIf="currentStep === 'form'">
+            <div class="step-header">
+                <h2>📝 Complete Your Profile</h2>
+                <p>Tell us about yourself</p>
+            </div>
+
+            <div class="form-grid">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">👤</span>
+                        <input type="text" [(ngModel)]="formData.name" placeholder="Enter your full name">
+                    </div>
+                </div>
+
+                <!-- Blood Type -->
+                <div class="form-group">
+                    <label>Blood Type *</label>
+                    <div class="input-with-icon select-wrapper">
+                        <span class="input-icon">🩸</span>
+                        <select [(ngModel)]="formData.bloodType">
+                            <option value="">Select blood type</option>
+                            <option *ngFor="let type of bloodTypes" [value]="type.value">
+                                {{ type.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="form-group">
+                    <label>Date of Birth *</label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">🎂</span>
+                        <input type="date" [(ngModel)]="formData.dateOfBirth">
+                    </div>
+                    <span class="helper-text">Age must be 18-65 years</span>
+                </div>
+
+                <!-- Weight -->
+                <div class="form-group">
+                    <label>Weight (kg) *</label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">⚖️</span>
+                        <input type="number" [(ngModel)]="formData.weight" placeholder="Enter weight in kg" min="50">
+                    </div>
+                    <span class="helper-text">Minimum 50 kg required</span>
+                </div>
+
+                <!-- City -->
+                <div class="form-group">
+                    <label>City *</label>
+                    <div class="input-with-icon select-wrapper">
+                        <span class="input-icon">📍</span>
+                        <select [(ngModel)]="formData.city">
+                            <option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Last Donation -->
+                <div class="form-group">
+                    <label>Last Donation Date</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" [(ngModel)]="neverDonated">
+                            <span>I've never donated blood before</span>
+                        </label>
+                    </div>
+                    <div class="input-with-icon" *ngIf="!neverDonated">
+                        <span class="input-icon">📅</span>
+                        <input type="date" [(ngModel)]="formData.lastDonationDate">
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage">
+                ⚠️ {{ errorMessage }}
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" (click)="goBack()">Back</button>
+                <button class="btn-primary" (click)="submitRegistration()" [disabled]="isLoading">
+                    <span *ngIf="!isLoading">Register as Donor</span>
+                    <span *ngIf="isLoading">Registering...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Success -->
+        <div class="step-content success-step" *ngIf="currentStep === 'success'">
+            <div class="success-icon">🎉</div>
+            <h2>Welcome, {{ registeredDonor?.name }}!</h2>
+            <p>You're now registered as a blood donor.</p>
+
+            <div class="donor-card">
+                <div class="donor-info">
+                    <div class="info-item">
+                        <span class="label">Blood Type</span>
+                        <span class="value blood-type">{{ registeredDonor?.bloodType }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Status</span>
+                        <span class="value status" [class.eligible]="registeredDonor?.eligible">
+                            {{ registeredDonor?.eligible ? '✅ Eligible to Donate' : '⏳ Not Yet Eligible' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-message">
+                <p>📱 You'll receive WhatsApp notifications for:</p>
+                <ul>
+                    <li>✅ When you're eligible to donate (90 days)</li>
+                    <li>✅ Blood shortage alerts in your area</li>
+                </ul>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" (click)="goHome()">Go Home</button>
+                <button class="btn-primary" (click)="goToPortal()">View My Profile</button>
+            </div>
+        </div>
+    </div>
+</div>

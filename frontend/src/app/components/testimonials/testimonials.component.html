@@ -1,0 +1,24 @@
+<section id="testimonials" class="testimonials">
+    <div class="section-container">
+        <span class="section-badge">Testimonials</span>
+        <h2 class="section-title">Stories That <span class="highlight">Inspire</span></h2>
+        <p class="section-subtitle">Real experiences from donors and recipients who found hope through our platform</p>
+
+        <div class="testimonials-grid">
+            <div #testimonialCard *ngFor="let testimonial of testimonials; let i = index" class="testimonial-card"
+                [class.featured]="testimonial.featured" [style.animation-delay]="(i * 0.15) + 's'">
+
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">{{ testimonial.quote }}</p>
+
+                <div class="testimonial-author">
+                    <div class="author-avatar">{{ testimonial.initials }}</div>
+                    <div class="author-info">
+                        <span class="author-name">{{ testimonial.author }}</span>
+                        <span class="author-role">{{ testimonial.role }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

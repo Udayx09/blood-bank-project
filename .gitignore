@@ -1,0 +1,66 @@
+# ================================
+# Dependencies
+# ================================
+node_modules/
+*/node_modules/
+
+# ================================
+# Build outputs
+# ================================
+# Backend
+backend/target/
+*.jar
+*.war
+
+# Frontend
+frontend/dist/
+frontend/.angular/
+
+# ================================
+# IDE and Editor
+# ================================
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# ================================
+# Environment and Secrets
+# ================================
+.env
+.env.local
+.env.*.local
+*.env
+
+# Backend secrets (use application-prod.properties with env vars)
+backend/src/main/resources/application-local.properties
+
+# ================================
+# WhatsApp Session (IMPORTANT!)
+# ================================
+whatsapp-service/.wwebjs_auth/
+whatsapp-service/.wwebjs_cache/
+
+# ================================
+# Logs
+# ================================
+*.log
+logs/
+npm-debug.log*
+
+# ================================
+# OS Files
+# ================================
+.DS_Store
+Thumbs.db
+
+# ================================
+# Misc
+# ================================
+*.tmp
+*.temp
+.cache/

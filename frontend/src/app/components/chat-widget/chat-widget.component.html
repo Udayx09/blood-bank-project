@@ -1,0 +1,48 @@
+<!-- Chat Toggle Button -->
+<button class="chat-toggle" (click)="toggleChat()" [class.active]="isOpen">
+    <span class="chat-icon">💬</span>
+    <span class="close-icon">✕</span>
+</button>
+
+<!-- Chat Window -->
+<div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">
+        <div class="header-info">
+            <span class="ai-icon">🤖</span>
+            <div class="header-text">
+                <h3>Blood Donation Assistant</h3>
+                <span class="status">Powered by Google AI</span>
+            </div>
+        </div>
+        <button class="minimize-btn" (click)="toggleChat()">−</button>
+    </div>
+
+    <div class="chat-body">
+        <div class="message" *ngFor="let msg of messages" [class]="msg.role">
+            <div class="message-content">
+                <span class="avatar">{{ msg.role === 'user' ? '👤' : '🤖' }}</span>
+                <div class="bubble">{{ msg.content }}</div>
+            </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="message assistant" *ngIf="isLoading">
+            <div class="message-content">
+                <span class="avatar">🤖</span>
+                <div class="bubble typing">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-footer">
+        <input type="text" [(ngModel)]="userInput" (keypress)="handleKeyPress($event)"
+            placeholder="Ask about blood donation..." [disabled]="isLoading" />
+        <button class="send-btn" (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading">
+            ➤
+        </button>
+    </div>
+</div>

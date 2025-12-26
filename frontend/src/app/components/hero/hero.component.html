@@ -1,0 +1,44 @@
+<section id="home" class="hero hero-background-image filter-blur">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-bg-img"
+        style="background-image: url('assets/images/hero-image.jpg') !important; filter: none !important; opacity: 1 !important;">
+    </div>
+
+    <div class="hero-container">
+        <div class="hero-content hero-content-centered">
+            <span class="hero-badge">🩸 Saving Lives Together</span>
+
+            <h1 class="hero-title">
+                Every Drop <span class="highlight" style="color: #00ff5e;">Counts</span>,<br>
+                Every Donor <span class="highlight" style="color: #4ade80;">Matters</span>
+            </h1>
+
+            <p class="hero-quote">
+                "The blood you donate gives someone another chance at life. One day that someone may be a close
+                relative, a friend, a loved one—or even you."
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn btn-primary" (click)="goToSearch()">
+                    <span>Get Blood Now</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <button class="btn btn-secondary btn-secondary-light" (click)="goToDonorRegistration()">
+                    🩸 Become a Donor
+                </button>
+            </div>
+
+            <div class="hero-stats">
+                <ng-container *ngFor="let stat of stats; let last = last">
+                    <div class="stat">
+                        <span class="stat-number">{{ stat.number }}</span>
+                        <span class="stat-label">{{ stat.label }}</span>
+                    </div>
+                    <div class="stat-divider" *ngIf="!last"></div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</section>

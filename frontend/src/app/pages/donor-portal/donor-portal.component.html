@@ -1,0 +1,290 @@
+<div class="donor-portal-page">
+    <div class="portal-container">
+        <!-- Header -->
+        <div class="portal-header">
+            <div class="header-left">
+                <button class="back-btn" (click)="goHome()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Home
+                </button>
+            </div>
+            <div class="header-center">
+                <span class="logo-icon">🩸</span>
+                <span class="logo-text">Donor Portal</span>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" (click)="logout()">
+                    Logout
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <p>Loading your profile...</p>
+        </div>
+
+        <!-- Content -->
+        <div class="portal-content" *ngIf="!isLoading && donor">
+            <!-- Welcome Section with Centered Photo -->
+            <div class="welcome-section">
+                <!-- Profile Photo (Centered) -->
+                <div class="profile-photo-section">
+                    <div class="photo-container" [class.has-photo]="getPhotoUrl()">
+                        <img *ngIf="getPhotoUrl()" [src]="getPhotoUrl()" alt="Profile Photo" class="profile-photo">
+                        <span *ngIf="!getPhotoUrl()" class="photo-placeholder">{{ donor.name.charAt(0).toUpperCase()
+                            }}</span>
+                        <div class="photo-overlay" (click)="photoInput.click()">
+                            <span *ngIf="!isUploadingPhoto">📷</span>
+                            <span *ngIf="isUploadingPhoto" class="uploading-spinner"></span>
+                        </div>
+                    </div>
+                    <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)"
+                        style="display: none;">
+                    <button class="change-photo-btn" (click)="photoInput.click()" [disabled]="isUploadingPhoto">
+                        {{ isUploadingPhoto ? 'Uploading...' : (getPhotoUrl() ? 'Change Photo' : 'Add Photo') }}
+                    </button>
+                </div>
+                <!-- Welcome Text -->
+                <div class="welcome-content">
+                    <h1>Welcome, {{ donor.name }}! 👋</h1>
+                    <p>Thank you for being a blood donor. Your contribution saves lives.</p>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="success-message" *ngIf="successMessage">
+                ✅ {{ successMessage }}
+            </div>
+            <div class="error-message" *ngIf="errorMessage">
+                ⚠️ {{ errorMessage }}
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <!-- Blood Type Card -->
+                <div class="stat-card blood-type-card">
+                    <div class="stat-icon">🩸</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Blood Type</span>
+                        <span class="stat-value blood-type">{{ donor.bloodType === 'UNKNOWN' ? '?' : donor.bloodType
+                            }}</span>
+                    </div>
+                </div>
+
+                <!-- Eligibility Card -->
+                <div class="stat-card eligibility-card" [class.eligible]="donor.eligible">
+                    <div class="stat-icon">{{ donor.eligible ? '✅' : '⏳' }}</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Donation Status</span>
+                        <span class="stat-value">
+                            {{ donor.eligible ? 'Eligible to Donate' : donor.daysUntilEligible + ' days remaining' }}
+                        </span>
+                    </div>
+                    <div class="eligibility-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" [style.width.%]="getEligibilityProgress()"></div>
+                        </div>
+                        <span class="progress-text" *ngIf="!donor.eligible">
+                            {{ 90 - donor.daysUntilEligible }} / 90 days
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Donations Count Card -->
+                <div class="stat-card donations-card">
+                    <div class="stat-icon">💝</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Donations</span>
+                        <span class="stat-value">{{ donationHistory.length }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>👤 Profile Information</h2>
+                    <button class="edit-btn" (click)="startEditing()" *ngIf="!isEditing">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                        Edit
+                    </button>
+                </div>
+
+                <!-- View Mode -->
+                <div class="profile-grid" *ngIf="!isEditing">
+                    <div class="profile-item">
+                        <span class="item-icon">👤</span>
+                        <div class="item-content">
+                            <span class="item-label">Full Name</span>
+                            <span class="item-value">{{ donor.name }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-icon">📱</span>
+                        <div class="item-content">
+                            <span class="item-label">Phone Number</span>
+                            <span class="item-value">{{ donor.phone }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-icon">🩸</span>
+                        <div class="item-content">
+                            <span class="item-label">Blood Type</span>
+                            <span class="item-value">{{ donor.bloodType === 'UNKNOWN' ? 'Not known' : donor.bloodType
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-icon">🎂</span>
+                        <div class="item-content">
+                            <span class="item-label">Age</span>
+                            <span class="item-value">{{ donor.age }} years</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-icon">⚖️</span>
+                        <div class="item-content">
+                            <span class="item-label">Weight</span>
+                            <span class="item-value">{{ donor.weight }} kg</span>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-icon">📍</span>
+                        <div class="item-content">
+                            <span class="item-label">City</span>
+                            <span class="item-value">{{ donor.city | titlecase }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Mode -->
+                <div class="edit-form" *ngIf="isEditing">
+                    <div class="form-group">
+                        <label>👤 Full Name</label>
+                        <input type="text" [(ngModel)]="editForm.name" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label>🩸 Blood Type</label>
+                        <select [(ngModel)]="editForm.bloodType">
+                            <option *ngFor="let type of bloodTypes" [value]="type.value">{{ type.label }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>⚖️ Weight (kg)</label>
+                        <input type="number" [(ngModel)]="editForm.weight" min="50">
+                    </div>
+                    <div class="form-group">
+                        <label>📍 City</label>
+                        <select [(ngModel)]="editForm.city">
+                            <option *ngFor="let city of cities" [value]="city.value">{{ city.label }}</option>
+                        </select>
+                    </div>
+                    <div class="edit-actions">
+                        <button class="btn-secondary" (click)="cancelEditing()">Cancel</button>
+                        <button class="btn-primary" (click)="saveProfile()">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation History Section -->
+            <!-- Donation Requests from Blood Banks -->
+            <div class="section-card requests-card" *ngIf="donationRequests.length > 0">
+                <div class="section-header">
+                    <h2>📩 Donation Requests</h2>
+                    <span class="request-badge">{{ donationRequests.length }}</span>
+                </div>
+
+                <div class="requests-list">
+                    <div class="request-item" *ngFor="let request of donationRequests"
+                        [class.pending]="request.status === 'PENDING'">
+                        <div class="request-info">
+                            <span class="request-bank">{{ request.bankName }}</span>
+                            <span class="request-address">{{ request.bankAddress }}, {{ request.bankCity }}</span>
+                            <span class="request-phone">📞 {{ request.bankPhone }}</span>
+                            <span class="request-date">Requested: {{ request.requestedAt | date:'short' }}</span>
+                        </div>
+                        <div class="request-status" *ngIf="request.status !== 'PENDING'">
+                            <span class="status-badge" [class]="request.status.toLowerCase()">{{ request.status
+                                }}</span>
+                        </div>
+                        <div class="request-actions" *ngIf="request.status === 'PENDING' && !request.isExpired">
+                            <button class="btn-accept" (click)="acceptRequest(request.id)">✅ Accept</button>
+                            <button class="btn-decline" (click)="declineRequest(request.id)">❌ Decline</button>
+                        </div>
+                        <div class="request-expired" *ngIf="request.isExpired && request.status === 'PENDING'">
+                            <span class="expired-text">Request expired</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation History -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>📋 Donation History</h2>
+                </div>
+
+                <div class="empty-state" *ngIf="donationHistory.length === 0">
+                    <span class="empty-icon">📭</span>
+                    <p>No donation records yet</p>
+                    <span class="empty-hint">Your donations will appear here after you donate blood.</span>
+                </div>
+
+                <div class="history-list" *ngIf="donationHistory.length > 0">
+                    <div class="history-item" *ngFor="let donation of donationHistory">
+                        <div class="history-icon">🩸</div>
+                        <div class="history-content">
+                            <span class="history-date">{{ formatDate(donation.donationDate) }}</span>
+                            <span class="history-bank">{{ donation.bloodBankName }}</span>
+                        </div>
+                        <div class="history-units">
+                            {{ donation.units }} unit{{ donation.units > 1 ? 's' : '' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="section-card notification-card">
+                <div class="section-header">
+                    <h2>🔔 Notifications</h2>
+                </div>
+                <p class="notification-info">
+                    You will receive WhatsApp notifications for:
+                </p>
+                <ul class="notification-list">
+                    <li>✅ When you become eligible to donate (after 90 days)</li>
+                    <li>✅ Urgent blood shortage alerts for {{ donor.bloodType === 'UNKNOWN' ? 'all blood types' :
+                        donor.bloodType }} in your area</li>
+                </ul>
+
+                <!-- Contact Availability Toggle -->
+                <div class="contact-toggle">
+                    <div class="toggle-info">
+                        <span class="toggle-label">📧 Allow blood banks to contact me directly</span>
+                        <span class="toggle-hint">Blood banks in your city can send you donation requests via
+                            WhatsApp</span>
+                    </div>
+                    <button class="toggle-btn" [class.active]="donor.isAvailableForContact ?? true"
+                        (click)="toggleContactAvailability()">
+                        <span class="toggle-track">
+                            <span class="toggle-thumb"></span>
+                        </span>
+                        <span class="toggle-status">{{ (donor.isAvailableForContact ?? true) ? 'ON' : 'OFF' }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.bloodbank:backend >------------------------
+[INFO] Building Blood Bank Backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ backend ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 29 source files with javac [debug release 17] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[4,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[5,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[6,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[7,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[12,2] cannot find symbol
+  symbol: class Data
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[13,2] cannot find symbol
+  symbol: class NoArgsConstructor
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[14,2] cannot find symbol
+  symbol: class AllArgsConstructor
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[15,2] cannot find symbol
+  symbol: class Builder
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/security/SecurityConfig.java:[3,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/security/SecurityConfig.java:[29,2] cannot find symbol
+  symbol: class RequiredArgsConstructor
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[27,27] cannot find symbol
+  symbol:   method <T>builder()
+  location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[34,27] cannot find symbol
+  symbol:   method <T>builder()
+  location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[42,27] cannot find symbol
+  symbol:   method <T>builder()
+  location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[51,27] cannot find symbol
+  symbol:   method <T>builder()
+  location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[59,27] cannot find symbol
+  symbol:   method <java.lang.String>builder()
+  location: class com.bloodbank.dto.ApiResponse
+[INFO] 15 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.937 s
+[INFO] Finished at: 2025-12-13T12:35:48+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project backend: Compilation failure: Compilation failure: 
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[4,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[5,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[6,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[7,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[12,2] cannot find symbol
+[ERROR]   symbol: class Data
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[13,2] cannot find symbol
+[ERROR]   symbol: class NoArgsConstructor
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[14,2] cannot find symbol
+[ERROR]   symbol: class AllArgsConstructor
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[15,2] cannot find symbol
+[ERROR]   symbol: class Builder
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/security/SecurityConfig.java:[3,14] package lombok does not exist
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/security/SecurityConfig.java:[29,2] cannot find symbol
+[ERROR]   symbol: class RequiredArgsConstructor
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[27,27] cannot find symbol
+[ERROR]   symbol:   method <T>builder()
+[ERROR]   location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[34,27] cannot find symbol
+[ERROR]   symbol:   method <T>builder()
+[ERROR]   location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[42,27] cannot find symbol
+[ERROR]   symbol:   method <T>builder()
+[ERROR]   location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[51,27] cannot find symbol
+[ERROR]   symbol:   method <T>builder()
+[ERROR]   location: class com.bloodbank.dto.ApiResponse
+[ERROR] /D:/blood bank project/backend/src/main/java/com/bloodbank/dto/ApiResponse.java:[59,27] cannot find symbol
+[ERROR]   symbol:   method <java.lang.String>builder()
+[ERROR]   location: class com.bloodbank.dto.ApiResponse
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

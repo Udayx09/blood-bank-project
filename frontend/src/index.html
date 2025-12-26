@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Blood Bank - Save Lives, Donate Blood</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover">
+    <meta name="description"
+        content="Blood Bank - Find blood donors and available blood units easily. Connect with hospitals and blood banks near you.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Loading Screen Styles */
+        .app-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .app-loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Medical Plus Animation */
+        .plus-loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .plus-loader::before,
+        .plus-loader::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(135deg, #2ed573, #26de81);
+            border-radius: 4px;
+            animation: pulse-plus 1.5s ease-in-out infinite;
+        }
+
+        .plus-loader::before {
+            width: 20px;
+            height: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .plus-loader::after {
+            width: 80px;
+            height: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes pulse-plus {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.8) translateX(-50%);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1) translateX(-50%);
+            }
+        }
+
+        .plus-loader::after {
+            animation: pulse-plus-h 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-plus-h {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.8) translateY(-50%);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1) translateY(-50%);
+            }
+        }
+
+        .loading-text {
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Glow effect */
+        .plus-glow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(46, 213, 115, 0.3) 0%, transparent 70%);
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div class="app-loading" id="appLoading">
+        <div class="plus-glow"></div>
+        <div class="plus-loader"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+    <app-root></app-root>
+
+    <script>
+        // Hide loading screen when app is ready
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                var loader = document.getElementById('appLoading');
+                if (loader) {
+                    loader.classList.add('hidden');
+                    setTimeout(function () {
+                        loader.remove();
+                    }, 500);
+                }
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo">🏥</div>
+            <h1>Blood Bank Portal</h1>
+            <p>{{ isLogin ? 'Login to manage your blood bank' : 'Register your blood bank account' }}</p>
+        </div>
+
+        <div class="error-message" *ngIf="error">
+            {{ error }}
+        </div>
+
+        <form (ngSubmit)="submit()">
+            <!-- Blood Bank Selection (Register only) -->
+            <div class="form-group" *ngIf="!isLogin">
+                <label>Select Your Blood Bank</label>
+                <select [(ngModel)]="bloodBankId" name="bloodBankId">
+                    <option [ngValue]="null">-- Select Blood Bank --</option>
+                    @for (bank of bloodBanks; track bank.id) {
+                    <option [ngValue]="bank.id">{{ bank.name }} - {{ bank.city }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" [(ngModel)]="phone" name="phone" placeholder="10 digit phone number" maxlength="10" />
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" />
+            </div>
+
+            <button type="submit" class="submit-btn" [disabled]="loading">
+                {{ loading ? 'Please wait...' : (isLogin ? 'Login' : 'Register') }}
+            </button>
+        </form>
+
+        <div class="toggle-mode">
+            <span *ngIf="isLogin">
+                Don't have an account?
+                <a (click)="toggleMode()">Register here</a>
+            </span>
+            <span *ngIf="!isLogin">
+                Already have an account?
+                <a (click)="toggleMode()">Login here</a>
+            </span>
+        </div>
+
+        <div class="back-link">
+            <a routerLink="/">← Back to Home</a>
+        </div>
+    </div>
+</div>

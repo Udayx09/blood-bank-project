@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Application - Feature Summary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+            color: #333;
+            line-height: 1.7;
+            font-size: 22px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #dc2626;
+            border-bottom: 4px solid #dc2626;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 38px;
+        }
+
+        h2 {
+            color: #fff;
+            background: #dc2626;
+            font-size: 24px;
+            margin: 25px 0 15px;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .feature-list li {
+            padding: 14px 18px;
+            margin: 8px 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 5px solid #dc2626;
+            font-size: 28px;
+        }
+
+        .feature-list li strong {
+            color: #1e293b;
+            font-size: 24px;
+        }
+
+        @media print {
+            body {
+                padding: 20px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 18px;
+                margin: 15px 0 8px;
+            }
+
+            .feature-list li {
+                padding: 10px 14px;
+                margin: 5px 0;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🩸 Blood Bank Application - Key Features</h1>
+
+    <h2>1. BLOOD SEARCH & RESERVATION</h2>
+    <ul class="feature-list">
+        <li><strong>Blood Type Selector</strong> — Interactive cards for all 8 blood types (A+, A-, B+, B-, AB+, AB-,
+            O+, O-)</li>
+        <li><strong>Real-time Results</strong> — Instant display of blood banks with available stock</li>
+        <li><strong>Reservation Form</strong> — Book blood with patient details, urgency level, and prescription upload
+        </li>
+        <li><strong>Prescription Upload</strong> — Mandatory doctor's prescription (images/PDF, max 5MB)</li>
+        <li><strong>WhatsApp Confirmation</strong> — Automated booking confirmation with all details</li>
+    </ul>
+
+    <h2>2. DONOR MANAGEMENT</h2>
+    <ul class="feature-list">
+        <li><strong>Donor Registration</strong> — Multi-step form with OTP verification via WhatsApp</li>
+        <li><strong>Donor Portal</strong> — Dashboard showing blood type, eligibility, and donation history</li>
+        <li><strong>Opt-in/Opt-out</strong> — Toggle to control availability for donation requests</li>
+        <li><strong>Eligibility Tracking</strong> — Automatic countdown until next eligible donation date</li>
+    </ul>
+
+    <h2>3. BANK PORTAL - DASHBOARD</h2>
+    <ul class="feature-list">
+        <li><strong>Statistics Overview</strong> — Total reservations, pending requests, completed transactions</li>
+        <li><strong>Blood Stock Display</strong> — Current inventory by blood type</li>
+        <li><strong>Expiry Alerts</strong> — Warnings for blood units expiring soon</li>
+    </ul>
+
+    <h2>4. BANK PORTAL - RESERVATIONS</h2>
+    <ul class="feature-list">
+        <li><strong>Reservations Table</strong> — Patient details, blood type, urgency, doctor name</li>
+        <li><strong>Prescription Viewer</strong> — In-modal prescription preview with download option</li>
+        <li><strong>Mandatory Review</strong> — Must view prescription before confirming reservation</li>
+        <li><strong>Status Management</strong> — Complete or cancel reservations with WhatsApp notifications</li>
+    </ul>
+
+    <h2>5. BANK PORTAL - BLOOD UNITS</h2>
+    <ul class="feature-list">
+        <li><strong>Expiry Tracking</strong> — Critical (≤3 days), Warning (≤7 days), Expired status</li>
+        <li><strong>Filter Options</strong> — By status, blood type, and expiry urgency</li>
+        <li><strong>Unit Management</strong> — Mark as used, unreserve, discard, or delete units</li>
+        <li><strong>Add Blood Unit</strong> — Manual entry with blood type, component, and collection date</li>
+    </ul>
+
+    <h2>6. BANK PORTAL - RECORD DONATION</h2>
+    <ul class="feature-list">
+        <li><strong>Donor Lookup</strong> — Search by phone number, auto-fills if found</li>
+        <li><strong>New Donor Registration</strong> — Register new donors during donation</li>
+        <li><strong>Two-Step Workflow</strong> — Record donation first, then add blood components</li>
+        <li><strong>Component Selection</strong> — Whole Blood, RBC, Plasma, Platelets, Cryoprecipitate</li>
+    </ul>
+
+    <h2>7. BANK PORTAL - FIND DONORS</h2>
+    <ul class="feature-list">
+        <li><strong>Donor Search</strong> — Find eligible donors by blood type</li>
+        <li><strong>WhatsApp Request</strong> — Send donation requests directly to donors</li>
+        <li><strong>Request Tracking</strong> — Monitor pending, accepted, and expired requests</li>
+    </ul>
+
+    <h2>8. BANK PORTAL - ANALYTICS</h2>
+    <ul class="feature-list">
+        <li><strong>Inventory Chart</strong> — Blood units distribution by type</li>
+        <li><strong>Donations Trend</strong> — Last 7 days donation activity</li>
+        <li><strong>Reservations Chart</strong> — Breakdown by status (pending/completed/cancelled)</li>
+    </ul>
+
+    <h2>9. ADMIN PANEL</h2>
+    <ul class="feature-list">
+        <li><strong>Blood Banks Management</strong> — View, approve, and delete blood banks</li>
+        <li><strong>System Statistics</strong> — Overview of all registered blood banks and donors</li>
+        <li><strong>Approval Workflow</strong> — Pending blood banks require admin approval</li>
+    </ul>
+
+    <h2>10. TECHNICAL HIGHLIGHTS</h2>
+    <ul class="feature-list">
+        <li><strong>WhatsApp Integration</strong> — Automated messaging for all notifications</li>
+        <li><strong>JWT Authentication</strong> — Secure token-based login for all portals</li>
+        <li><strong>Real-time Inventory</strong> — Live stock updates across the system</li>
+        <li><strong>Responsive Design</strong> — Mobile-friendly interface</li>
+        <li><strong>PostgreSQL + Spring Boot + Angular</strong> — Modern tech stack</li>
+    </ul>
+
+</body>
+
+</html>

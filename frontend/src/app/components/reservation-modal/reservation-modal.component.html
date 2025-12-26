@@ -1,0 +1,189 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="onBackdropClick($event)">
+    <div class="modal-container">
+        <!-- Close Button -->
+        <button class="modal-close" (click)="closeModal()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Success State -->
+        <div class="modal-success" *ngIf="isSuccess">
+            <div class="success-icon">✅</div>
+            <h2>Reservation Confirmed!</h2>
+            <p>You will receive a WhatsApp message shortly with all the details.</p>
+            <div class="success-info">
+                <div class="info-item">
+                    <span class="info-label">Hospital</span>
+                    <span class="info-value">{{ bloodBank?.name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Blood Type</span>
+                    <span class="info-value">{{ form.bloodType }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Units</span>
+                    <span class="info-value">{{ form.unitsNeeded }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form State -->
+        <div class="modal-form" *ngIf="!isSuccess">
+            <!-- Header -->
+            <div class="modal-header">
+                <div class="modal-icon">🩸</div>
+                <h2>Reserve Blood</h2>
+                <p>Fill in the details to reserve blood at <strong>{{ bloodBank?.name }}</strong></p>
+            </div>
+
+            <!-- Blood Type Display -->
+            <div class="blood-type-display">
+                <span class="blood-badge">{{ bloodType }}</span>
+                <span class="blood-label">Selected Blood Type</span>
+            </div>
+
+            <!-- Form -->
+            <form (ngSubmit)="onSubmit()">
+                <!-- Patient Name -->
+                <div class="form-group">
+                    <label for="patientName">Patient Name <span class="required">*</span></label>
+                    <input type="text" id="patientName" [(ngModel)]="form.patientName" name="patientName"
+                        placeholder="Enter patient's full name" required>
+                </div>
+
+                <!-- WhatsApp Number -->
+                <div class="form-group">
+                    <label for="whatsappNumber">WhatsApp Number <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <input type="tel" id="whatsappNumber" [(ngModel)]="form.whatsappNumber" name="whatsappNumber"
+                            placeholder="10 digit number (e.g. 9876543210)" maxlength="10" required>
+                    </div>
+                    <span class="form-hint">You'll receive reservation details on this number</span>
+                </div>
+
+                <!-- Units Needed -->
+                <div class="form-group">
+                    <label for="unitsNeeded">Units Needed <span class="required">*</span></label>
+                    <div class="units-selector">
+                        <button type="button" class="unit-btn" (click)="decrementUnits()">−</button>
+                        <input type="number" id="unitsNeeded" [(ngModel)]="form.unitsNeeded" name="unitsNeeded" min="1"
+                            max="10" readonly>
+                        <button type="button" class="unit-btn" (click)="incrementUnits()">+</button>
+                    </div>
+                </div>
+
+                <!-- Urgency Level -->
+                <div class="form-group">
+                    <label>Urgency Level</label>
+                    <div class="urgency-options">
+                        <label class="urgency-option" [class.selected]="form.urgencyLevel === 'normal'">
+                            <input type="radio" [(ngModel)]="form.urgencyLevel" name="urgencyLevel" value="normal">
+                            <span class="urgency-label">
+                                <span class="urgency-icon">🟢</span>
+                                <span>Normal</span>
+                            </span>
+                        </label>
+                        <label class="urgency-option" [class.selected]="form.urgencyLevel === 'urgent'">
+                            <input type="radio" [(ngModel)]="form.urgencyLevel" name="urgencyLevel" value="urgent">
+                            <span class="urgency-label">
+                                <span class="urgency-icon">🟡</span>
+                                <span>Urgent</span>
+                            </span>
+                        </label>
+                        <label class="urgency-option" [class.selected]="form.urgencyLevel === 'emergency'">
+                            <input type="radio" [(ngModel)]="form.urgencyLevel" name="urgencyLevel" value="emergency">
+                            <span class="urgency-label">
+                                <span class="urgency-icon">🔴</span>
+                                <span>Emergency</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Referring Doctor -->
+                <div class="form-group">
+                    <label for="referringDoctor">Referring Doctor <span class="required">*</span></label>
+                    <input type="text" id="referringDoctor" [(ngModel)]="form.referringDoctor" name="referringDoctor"
+                        placeholder="Enter doctor's name who prescribed" required>
+                </div>
+
+                <!-- Prescription Upload -->
+                <div class="form-group prescription-upload">
+                    <label>Doctor's Prescription <span class="required">*</span></label>
+                    <div class="upload-area" *ngIf="!prescriptionPreview">
+                        <input type="file" id="prescription" (change)="onPrescriptionSelect($event)"
+                            accept="image/*,.pdf" class="file-input">
+                        <label for="prescription" class="upload-label">
+                            <span class="upload-icon">📄</span>
+                            <span>Click to upload prescription</span>
+                            <span class="upload-hint">JPG, PNG or PDF (max 5MB)</span>
+                        </label>
+                    </div>
+                    <div class="prescription-preview" *ngIf="prescriptionPreview">
+                        <div class="preview-content">
+                            <img *ngIf="prescriptionPreview !== 'PDF'" [src]="prescriptionPreview" alt="Prescription">
+                            <div *ngIf="prescriptionPreview === 'PDF'" class="pdf-preview">
+                                <span class="pdf-icon">📄</span>
+                                <span>PDF Uploaded</span>
+                            </div>
+                            <div class="upload-status" *ngIf="isUploading">Uploading...</div>
+                            <div class="upload-status success" *ngIf="prescriptionPath && !isUploading">✓ Uploaded</div>
+                        </div>
+                        <button type="button" class="remove-btn" (click)="removePrescription()">×</button>
+                    </div>
+                </div>
+
+                <!-- Documents Required Notice -->
+                <div class="documents-notice">
+                    <h4>📋 Documents Required at Hospital</h4>
+                    <ul>
+                        <li>Doctor's Prescription / Requisition</li>
+                        <li>Patient Hospital Admission Slip</li>
+                        <li>Government ID (Aadhaar/PAN/Passport)</li>
+                    </ul>
+                </div>
+
+                <!-- Warning & Confirmation -->
+                <div class="confirmation-section">
+                    <div class="warning-banner">
+                        <span class="warning-icon">⚠️</span>
+                        <p>Only use this if you <strong>REALLY</strong> need blood. False requests can cause
+                            <strong>serious harm</strong> to patients who genuinely need blood.
+                        </p>
+                    </div>
+                    <label class="confirmation-checkbox">
+                        <input type="checkbox" [(ngModel)]="form.isConfirmed" name="isConfirmed">
+                        <span class="checkbox-label">I confirm this request is genuine and I need blood for a real
+                            patient.</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary submit-btn" [disabled]="isSubmitting">
+                    <span *ngIf="!isSubmitting">
+                        Confirm Reservation
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                    <span *ngIf="isSubmitting" class="loading">
+                        <span class="spinner"></span>
+                        Processing...
+                    </span>
+                </button>
+            </form>
+
+            <!-- Error Message Display -->
+            <div class="error-banner" *ngIf="errorMessage">
+                <span class="error-icon">❌</span>
+                <div class="error-content">
+                    <strong>Reservation Failed</strong>
+                    <p>{{ errorMessage }}</p>
+                </div>
+                <button class="error-close" (click)="errorMessage = null">×</button>
+            </div>
+        </div>
+    </div>
+</div>

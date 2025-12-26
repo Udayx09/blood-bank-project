@@ -1,0 +1,18 @@
+2025/12/11-21:40:20.967 7c14 Reusing MANIFEST D:\blood bank project\server\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/12/11-21:40:20.968 7c14 Recovering log #26
+2025/12/11-21:40:20.969 7c14 Reusing old log D:\blood bank project\server\.wwebjs_auth\session\Default\Local Storage\leveldb/000026.log 
+2025/12/11-21:42:24.582 8ba4 Level-0 table #30: started
+2025/12/11-21:42:24.590 8ba4 Level-0 table #30: 13218 bytes OK
+2025/12/11-21:42:24.593 8ba4 Delete type=0 #26
+2025/12/12-21:27:20.945 acfc Level-0 table #32: started
+2025/12/12-21:27:20.948 acfc Level-0 table #32: 14047 bytes OK
+2025/12/12-21:27:20.951 acfc Delete type=0 #29
+2025/12/12-21:27:20.952 acfc Compacting 4@0 + 1@1 files
+2025/12/12-21:27:20.958 acfc Generated table #33@0: 130 keys, 8159 bytes
+2025/12/12-21:27:20.958 acfc Compacted 4@0 + 1@1 files => 8159 bytes
+2025/12/12-21:27:20.959 acfc compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/12/12-21:27:20.959 acfc Delete type=2 #21
+2025/12/12-21:27:20.959 acfc Delete type=2 #24
+2025/12/12-21:27:20.959 acfc Delete type=2 #27
+2025/12/12-21:27:20.959 acfc Delete type=2 #30
+2025/12/12-21:27:20.959 acfc Delete type=2 #32
