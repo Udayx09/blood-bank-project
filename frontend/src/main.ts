@@ -5,6 +5,11 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app/app.routes';
 
+// Register Chart.js components globally
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
+
 bootstrapApplication(AppComponent, {
     providers: [
         provideAnimations(),
