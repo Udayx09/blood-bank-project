@@ -86,7 +86,7 @@ export class AdminLoginComponent {
 
     login() {
         // Simple password check - in production, use proper backend authentication
-        if (this.password === 'admin123') {
+        if (this.password === 'udaysproject18') {
             localStorage.setItem('adminToken', 'admin-authenticated');
             this.router.navigate(['/admin']);
         } else {
