@@ -55,4 +55,9 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
      * Find pending donations (components not yet added)
      */
     List<Donation> findByBloodBankIdAndComponentsAddedFalseOrderByDonationDateDesc(Long bloodBankId);
+
+    /**
+     * Delete all donations for a specific blood bank
+     */
+    void deleteByBloodBankId(Long bloodBankId);
 }

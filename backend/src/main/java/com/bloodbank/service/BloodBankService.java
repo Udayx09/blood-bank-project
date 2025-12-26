@@ -6,6 +6,8 @@ import com.bloodbank.entity.BloodInventory;
 import com.bloodbank.repository.BloodBankRepository;
 import com.bloodbank.repository.BloodInventoryRepository;
 import com.bloodbank.repository.BloodUnitRepository;
+import com.bloodbank.repository.DonationRepository;
+import com.bloodbank.repository.DonorRequestRepository;
 import com.bloodbank.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +23,21 @@ public class BloodBankService {
     private final BloodInventoryRepository inventoryRepository;
     private final ReservationRepository reservationRepository;
     private final BloodUnitRepository bloodUnitRepository;
+    private final DonorRequestRepository donorRequestRepository;
+    private final DonationRepository donationRepository;
 
     public BloodBankService(BloodBankRepository bloodBankRepository,
             BloodInventoryRepository inventoryRepository,
             ReservationRepository reservationRepository,
-            BloodUnitRepository bloodUnitRepository) {
+            BloodUnitRepository bloodUnitRepository,
+            DonorRequestRepository donorRequestRepository,
+            DonationRepository donationRepository) {
         this.bloodBankRepository = bloodBankRepository;
         this.inventoryRepository = inventoryRepository;
         this.reservationRepository = reservationRepository;
         this.bloodUnitRepository = bloodUnitRepository;
+        this.donorRequestRepository = donorRequestRepository;
+        this.donationRepository = donationRepository;
     }
 
     public List<BloodBankDto> getAllBloodBanks() {
@@ -110,15 +118,13 @@ public class BloodBankService {
     @Transactional
     public boolean deleteBloodBank(Long id) {
         if (bloodBankRepository.existsById(id)) {
-            // Delete all related data first
+            // Delete all related data first (order matters for FK constraints)
+            donorRequestRepository.deleteByBloodBankId(id);
+            donationRepository.deleteByBloodBankId(id);
             reservationRepository.deleteByBloodBankId(id);
             bloodUnitRepository.deleteByBloodBankId(id);
             inventoryRepository.deleteByBloodBankId(id);
-            // Clear password hash to remove bank account if any
-            bloodBankRepository.findById(id).ifPresent(bank -> {
-                bank.setPasswordHash(null);
-                bloodBankRepository.save(bank);
-            });
+            // Delete the blood bank
             bloodBankRepository.deleteById(id);
             return true;
         }
