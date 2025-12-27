@@ -616,17 +616,159 @@
 }
 
 @media (max-width: 768px) {
+    .portal-container {
+        flex-direction: column;
+        position: relative;
+    }
+
     .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        left: 0 !important;
+        bottom: 0;
+        top: auto;
+        border-right: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        background: rgba(26, 26, 46, 0.98);
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .sidebar-header {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 8px;
+        gap: 0;
+        overflow-x: auto;
+    }
+
+    .nav-item {
+        flex-direction: column;
+        padding: 8px 12px;
+        gap: 4px;
+        min-width: 50px;
+        text-align: center;
+    }
+
+    .nav-item span:first-child {
+        font-size: 18px;
+    }
+
+    .nav-item span:last-child {
+        font-size: 9px;
+    }
+
+    .sidebar-footer {
         display: none;
     }
 
     .main-content {
         margin-left: 0;
+        margin-bottom: 80px;
+        padding: 12px;
     }
 
-    .stats-grid,
+    .content-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .content-header h1 {
+        font-size: 22px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        font-size: 24px;
+    }
+
+    .stat-info h3 {
+        font-size: 22px;
+    }
+
+    .stat-info p {
+        font-size: 11px;
+    }
+
     .inventory-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .inventory-card {
+        padding: 16px;
+    }
+
+    .blood-type {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .units-count {
+        font-size: 22px;
+    }
+
+    /* Table on mobile */
+    .reservations-table-container {
+        overflow-x: auto;
+    }
+
+    .reservations-table th,
+    .reservations-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    /* Modal on mobile */
+    .modal-overlay {
+        padding: 0;
+        z-index: 1100;
+    }
+
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+    }
+
+    .modal-footer {
+        padding: 16px;
+        flex-shrink: 0;
+    }
+
+    /* Toast on mobile */
+    .toast {
+        right: 12px;
+        left: 12px;
+        top: auto;
+        bottom: 100px;
     }
 }
 
