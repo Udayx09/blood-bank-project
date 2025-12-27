@@ -1605,11 +1605,17 @@
 
     /* Hide text on mobile - icons only */
     .nav-text {
-        display: none;
+        display: none !important;
     }
 
     .nav-icon {
         font-size: 20px;
+    }
+
+    /* Hide WhatsApp link on mobile (doesn't work on deployed site anyway) */
+    .nav-item[href*="localhost"],
+    .nav-item:last-child {
+        display: none;
     }
 
     .sidebar-footer {
