@@ -643,25 +643,35 @@
     .sidebar-nav {
         flex-direction: row;
         justify-content: space-around;
-        padding: 8px;
+        padding: 6px 4px;
         gap: 0;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-item {
         flex-direction: column;
-        padding: 8px 12px;
-        gap: 4px;
-        min-width: 50px;
+        padding: 6px 8px;
+        gap: 2px;
+        min-width: 45px;
+        flex: 1;
+        border-radius: 8px;
         text-align: center;
     }
 
-    .nav-item span:first-child {
-        font-size: 18px;
+    .nav-item.active {
+        background: linear-gradient(135deg, #2ed573, #26de81);
+        box-shadow: none;
     }
 
+    /* Icons only on mobile */
+    .nav-item span:first-child {
+        font-size: 20px;
+    }
+
+    /* Hide text labels on mobile */
     .nav-item span:last-child {
-        font-size: 9px;
+        display: none;
     }
 
     .sidebar-footer {

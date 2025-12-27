@@ -1583,24 +1583,33 @@
     .sidebar-nav {
         flex-direction: row;
         justify-content: space-around;
-        padding: 8px;
+        padding: 6px 4px;
         gap: 0;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-item {
         flex-direction: column;
-        padding: 8px 12px;
-        gap: 4px;
-        min-width: 60px;
+        padding: 6px 8px;
+        gap: 2px;
+        min-width: 45px;
+        flex: 1;
+        border-radius: 8px;
     }
 
+    .nav-item.active {
+        background: linear-gradient(135deg, #e63946, #d62839);
+        box-shadow: none;
+    }
+
+    /* Hide text on mobile - icons only */
     .nav-text {
-        font-size: 10px;
+        display: none;
     }
 
     .nav-icon {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .sidebar-footer {
