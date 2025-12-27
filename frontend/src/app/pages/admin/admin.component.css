@@ -1520,3 +1520,264 @@
     background: rgba(255, 193, 7, 0.2);
     color: #ffc107;
 }
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Tablet and Mobile - Hide sidebar by default */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        width: 280px;
+        z-index: 1001;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .blood-type-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Mobile Phones */
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        top: auto;
+        border-right: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-header {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 8px;
+        gap: 0;
+        overflow-x: auto;
+    }
+
+    .nav-item {
+        flex-direction: column;
+        padding: 8px 12px;
+        gap: 4px;
+        min-width: 60px;
+    }
+
+    .nav-text {
+        font-size: 10px;
+    }
+
+    .nav-icon {
+        font-size: 18px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        margin-bottom: 80px;
+        padding: 12px;
+    }
+
+    .content-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .content-header h1 {
+        font-size: 22px;
+    }
+
+    .header-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .whatsapp-status {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .stat-info h3 {
+        font-size: 24px;
+    }
+
+    .stat-info p {
+        font-size: 12px;
+    }
+
+    .blood-type-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .blood-type-card {
+        padding: 12px 8px;
+    }
+
+    .blood-type-card .type {
+        font-size: 16px;
+    }
+
+    .blood-type-card .units {
+        font-size: 10px;
+    }
+
+    /* Reservations Table Mobile */
+    .reservations-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .filter-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+    }
+
+    .filter-tab {
+        white-space: nowrap;
+        font-size: 12px;
+        padding: 8px 14px;
+    }
+
+    .reservations-table-container {
+        overflow-x: auto;
+    }
+
+    .reservations-table th,
+    .reservations-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .actions-cell {
+        flex-wrap: nowrap;
+    }
+
+    .action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    /* Blood Banks Form */
+    .bloodbank-form {
+        padding: 16px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+    }
+
+    /* Inventory Grid */
+    .inventory-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Analytics Charts */
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card {
+        min-height: 250px;
+    }
+
+    /* Donors Table */
+    .donors-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .donors-table th,
+    .donors-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    /* Toast on mobile */
+    .toast {
+        right: 12px;
+        left: 12px;
+        top: auto;
+        bottom: 100px;
+    }
+
+    /* Logout button for mobile */
+    .logout-btn {
+        display: none;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .blood-type-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .section {
+        padding: 16px;
+    }
+
+    .section h2 {
+        font-size: 16px;
+    }
+}
