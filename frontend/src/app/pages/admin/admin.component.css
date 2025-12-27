@@ -1105,7 +1105,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 1100;
+    /* Higher than mobile sidebar (1000) */
 }
 
 .modal {
@@ -1555,6 +1556,7 @@
 @media (max-width: 768px) {
     .admin-container {
         flex-direction: column;
+        position: relative;
     }
 
     .sidebar {
@@ -1566,6 +1568,8 @@
         top: auto;
         border-right: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        background: rgba(26, 26, 46, 0.98);
     }
 
     .sidebar-header {
