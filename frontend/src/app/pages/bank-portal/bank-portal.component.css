@@ -664,14 +664,13 @@
         box-shadow: none;
     }
 
-    /* Icons only on mobile */
-    .nav-item span:first-child {
-        font-size: 20px;
+    /* Hide text on mobile - icons only */
+    .nav-text {
+        display: none !important;
     }
 
-    /* Hide text labels on mobile */
-    .nav-item span:last-child {
-        display: none;
+    .nav-icon {
+        font-size: 20px;
     }
 
     .sidebar-footer {

@@ -17,24 +17,24 @@
 
         <nav class="sidebar-nav">
             <a class="nav-item" [class.active]="activeView === 'dashboard'" (click)="setActiveView('dashboard')">
-                <span>📊</span> Dashboard
+                <span class="nav-icon">📊</span><span class="nav-text">Dashboard</span>
             </a>
             <a class="nav-item" [class.active]="activeView === 'reservations'" (click)="setActiveView('reservations')">
-                <span>📋</span> Reservations
+                <span class="nav-icon">📋</span><span class="nav-text">Reservations</span>
             </a>
             <a class="nav-item" [class.active]="activeView === 'inventory'" (click)="setActiveView('inventory')">
-                <span>🩸</span> Inventory
+                <span class="nav-icon">🩸</span><span class="nav-text">Inventory</span>
             </a>
             <a class="nav-item" [class.active]="activeView === 'units'" (click)="setActiveView('units')">
-                <span>📦</span> Blood Units
+                <span class="nav-icon">📦</span><span class="nav-text">Blood Units</span>
             </a>
             <a class="nav-item" [class.active]="activeView === 'donors'"
                 (click)="setActiveView('donors'); searchDonors(); loadDonorRequests()">
-                <span>👥</span> Find Donors
+                <span class="nav-icon">👥</span><span class="nav-text">Find Donors</span>
             </a>
             <a class="nav-item" [class.active]="activeView === 'analytics'"
                 (click)="setActiveView('analytics'); loadAnalytics()">
-                <span>📈</span> Analytics
+                <span class="nav-icon">📈</span><span class="nav-text">Analytics</span>
             </a>
         </nav>
 
