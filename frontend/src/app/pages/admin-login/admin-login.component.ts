@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -78,11 +78,19 @@ import { CommonModule } from '@angular/common';
         .back-link { display: block; margin-top: 1.5rem; color: #4fc3f7; text-decoration: none; }
     `]
 })
-export class AdminLoginComponent {
+export class AdminLoginComponent implements OnInit {
     password = '';
     error = '';
 
     constructor(private router: Router) { }
+
+    ngOnInit() {
+        // Check if already logged in - redirect to admin if so (fixes back button issue)
+        if (localStorage.getItem('adminToken')) {
+            this.router.navigate(['/admin']);
+        }
+    }
+
 
     login() {
         // Simple password check for testing
