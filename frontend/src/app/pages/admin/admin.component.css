@@ -1613,9 +1613,17 @@
     }
 
     /* Hide WhatsApp link on mobile (doesn't work on deployed site anyway) */
-    .nav-item[href*="localhost"],
-    .nav-item:last-child {
-        display: none;
+    .nav-whatsapp {
+        display: none !important;
+    }
+
+    /* Show logout in nav bar on mobile with red icon */
+    .nav-logout {
+        display: flex !important;
+    }
+
+    .nav-logout .nav-icon {
+        color: #ff6b6b;
     }
 
     .sidebar-footer {

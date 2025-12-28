@@ -677,6 +677,15 @@
         display: none;
     }
 
+    /* Show logout in nav bar on mobile */
+    .nav-logout {
+        display: flex !important;
+    }
+
+    .nav-logout .nav-icon {
+        color: #ff6b6b;
+    }
+
     .main-content {
         margin-left: 0;
         margin-bottom: 80px;
