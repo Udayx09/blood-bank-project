@@ -104,6 +104,12 @@
     transition: all 0.3s ease;
 }
 
+.form-group select option {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.5rem;
+}
+
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
