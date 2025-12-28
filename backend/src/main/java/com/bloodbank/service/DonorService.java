@@ -407,7 +407,8 @@ public class DonorService {
      * Excludes: opted-out donors, recently contacted, ineligible
      */
     public List<DonorDto> searchDonorsForBank(Long bankId, String bloodType, String city) {
-        LocalDate eligibleDate = LocalDate.now().minusDays(DONATION_GAP_DAYS);
+        // DEMO MODE: Use old date to show ALL donors regardless of eligibility
+        LocalDate eligibleDate = LocalDate.now().minusYears(10);
         LocalDateTime cooldownDate = LocalDateTime.now().minusDays(COOLDOWN_DAYS);
 
         // Get IDs of donors contacted by this bank within cooldown period
