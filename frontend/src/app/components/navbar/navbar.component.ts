@@ -8,6 +8,7 @@ import { ThemeService } from '../../services/theme.service';
     standalone: true,
     imports: [CommonModule, RouterLink],
     templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css'],
     encapsulation: ViewEncapsulation.None
 })
 export class NavbarComponent {
