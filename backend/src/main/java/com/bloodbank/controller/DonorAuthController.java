@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Donor Authentication Controller
@@ -26,13 +27,16 @@ public class DonorAuthController {
     private final DonorRepository donorRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final String whatsappServiceUrl;
 
     public DonorAuthController(DonorRepository donorRepository,
             PasswordEncoder passwordEncoder,
-            JwtTokenProvider jwtTokenProvider) {
+            JwtTokenProvider jwtTokenProvider,
+            @Value("${whatsapp.service.url}") String whatsappServiceUrl) {
         this.donorRepository = donorRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.whatsappServiceUrl = whatsappServiceUrl;
     }
 
     /**
@@ -296,7 +300,7 @@ public class DonorAuthController {
             java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
             String jsonBody = String.format("{\"phoneNumber\":\"%s\",\"otp\":\"%s\"}", phoneNumber, otp);
             java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                    .uri(java.net.URI.create("http://localhost:3001/api/whatsapp/send-donor-otp"))
+                    .uri(java.net.URI.create(whatsappServiceUrl + "/api/whatsapp/send-donor-otp"))
                     .header("Content-Type", "application/json")
                     .POST(java.net.http.HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
