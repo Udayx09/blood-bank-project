@@ -148,3 +148,28 @@
 .back-link a:hover {
     color: #fff;
 }
+
+/* Demo Credentials Checkbox */
+.demo-credentials {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: rgba(46, 213, 115, 0.15);
+    border: 1px solid rgba(46, 213, 115, 0.3);
+    border-radius: 10px;
+}
+
+.demo-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #2ed573;
+    font-size: 14px;
+}
+
+.demo-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2ed573;
+    cursor: pointer;
+}

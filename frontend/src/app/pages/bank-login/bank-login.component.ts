@@ -99,4 +99,15 @@ export class BankLoginComponent {
             });
         }
     }
+
+    fillDemoCredentials(event: Event) {
+        const checked = (event.target as HTMLInputElement).checked;
+        if (checked) {
+            this.phone = '7498497227';
+            this.password = 'athar@1234';
+        } else {
+            this.phone = '';
+            this.password = '';
+        }
+    }
 }

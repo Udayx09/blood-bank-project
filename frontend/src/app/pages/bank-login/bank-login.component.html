@@ -32,6 +32,14 @@
                 <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" />
             </div>
 
+            <!-- Demo Credentials Checkbox -->
+            <div class="demo-credentials" *ngIf="isLogin">
+                <label class="demo-checkbox">
+                    <input type="checkbox" (change)="fillDemoCredentials($event)" />
+                    <span>Use demo credentials (for evaluators)</span>
+                </label>
+            </div>
+
             <button type="submit" class="submit-btn" [disabled]="loading">
                 {{ loading ? 'Please wait...' : (isLogin ? 'Login' : 'Register') }}
             </button>
