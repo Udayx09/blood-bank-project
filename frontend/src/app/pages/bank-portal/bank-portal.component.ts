@@ -191,8 +191,10 @@ export class BankPortalComponent implements OnInit {
             },
             error: (err) => {
                 console.error('Failed to load stats:', err);
-                if (err.status === 401) {
-                    this.logout();
+                // If 401 (unauthorized) or 404 (blood bank deleted), logout
+                if (err.status === 401 || err.status === 404) {
+                    this.showToast('Blood bank session expired or was deleted. Please login again.', 'error');
+                    setTimeout(() => this.logout(), 2000);
                 }
                 this.loading = false;
             }

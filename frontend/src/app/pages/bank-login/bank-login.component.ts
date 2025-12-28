@@ -21,9 +21,21 @@ export class BankLoginComponent {
     error = '';
 
     constructor(private apiService: ApiService, private router: Router) {
-        // Check if already logged in
+        // Check if already logged in - but verify the session is still valid
         if (localStorage.getItem('bankToken')) {
-            this.router.navigate(['/bank-portal']);
+            // Verify session by calling stats
+            this.apiService.getBankStats().subscribe({
+                next: () => {
+                    // Session valid, redirect to portal
+                    this.router.navigate(['/bank-portal']);
+                },
+                error: () => {
+                    // Session invalid (blood bank deleted or token expired)
+                    localStorage.removeItem('bankToken');
+                    localStorage.removeItem('bankInfo');
+                    // Stay on login page
+                }
+            });
         }
         // Load blood banks for registration
         this.loadBloodBanks();
