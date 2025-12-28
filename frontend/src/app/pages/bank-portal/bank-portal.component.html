@@ -180,7 +180,8 @@
                             <th>Blood</th>
                             <th>Units</th>
                             <th>Urgency</th>
-                            <th>Prescription</th>
+                            <th>Doctor</th>
+                            <th>Rx</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th>Actions</th>
@@ -198,6 +199,7 @@
                             <td>{{ res.unitsNeeded }}</td>
                             <td><span class="urgency-badge" [class]="'urgency-' + res.urgencyLevel">{{ res.urgencyLevel
                                     }}</span></td>
+                            <td>{{ res.referringDoctor || '-' }}</td>
                             <td>
                                 <button *ngIf="res.prescriptionPath" class="prescription-link"
                                     [class.viewed]="hasPrescriptionViewed(res.id)"
