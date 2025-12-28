@@ -365,4 +365,23 @@
         padding: 0.4rem 0.75rem;
         font-size: 0.7rem;
     }
+
+    /* Mobile hero background fix */
+    .hero-bg-img {
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .hero-bg-overlay {
+        background: linear-gradient(180deg,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(139, 0, 0, 0.3) 100%);
+    }
+
+    .hero {
+        min-height: 100vh;
+        min-height: 100dvh;
+        /* Dynamic viewport height for mobile */
+    }
 }
