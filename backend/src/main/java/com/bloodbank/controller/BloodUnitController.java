@@ -499,13 +499,22 @@ public class BloodUnitController {
             return ResponseEntity.status(401).body(Map.of("success", false, "error", "Unauthorized"));
         }
 
-        String normalizedPhone = normalizePhone(phone);
-        Optional<Donor> optDonor = donorRepository.findByPhone(normalizedPhone);
+        // Try to find donor with different phone formats
+        String cleanPhone = phone.replaceAll("[^0-9]", "");
+        Donor donor = donorRepository.findByPhone(cleanPhone).orElse(null);
+
+        // If not found, try with 91 prefix (Indian phone format)
+        if (donor == null && !cleanPhone.startsWith("91") && cleanPhone.length() == 10) {
+            donor = donorRepository.findByPhone("91" + cleanPhone).orElse(null);
+        }
+        // If not found with prefix, try without it
+        if (donor == null && cleanPhone.startsWith("91") && cleanPhone.length() == 12) {
+            donor = donorRepository.findByPhone(cleanPhone.substring(2)).orElse(null);
+        }
 
         Map<String, Object> result = new HashMap<>();
 
-        if (optDonor.isPresent()) {
-            Donor donor = optDonor.get();
+        if (donor != null) {
             result.put("success", true);
             result.put("found", true);
             Map<String, Object> donorDto = new HashMap<>();
