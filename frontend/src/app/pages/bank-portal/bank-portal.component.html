@@ -660,7 +660,7 @@
                             </div>
                             <div class="donor-info-item">
                                 <span class="info-label">Blood Type:</span>
-                                <span class="info-value blood-type">{{ newDonation.foundBloodType }}</span>
+                                <span class="info-value blood-type">{{ newDonation.foundBloodType || 'N/A' }}</span>
                             </div>
                             <div class="donor-info-item" *ngIf="!newDonation.isEligible">
                                 <span class="info-label">Status:</span>

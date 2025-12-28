@@ -558,12 +558,18 @@ public class BloodUnitController {
             String donorName = (String) request.get("donorName");
             String donorDateOfBirthStr = (String) request.get("donorDateOfBirth");
 
-            if (phone == null || donationDateStr == null) {
+            if (phone == null || phone.trim().isEmpty()) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("success", false, "error", "Phone and donation date required"));
+                        .body(Map.of("success", false, "error", "Phone number required"));
             }
 
-            LocalDate donationDate = LocalDate.parse(donationDateStr);
+            // Default to today if date is empty
+            LocalDate donationDate;
+            if (donationDateStr == null || donationDateStr.trim().isEmpty()) {
+                donationDate = LocalDate.now();
+            } else {
+                donationDate = LocalDate.parse(donationDateStr);
+            }
             BloodBank bank = bloodBankRepository.findById(bankId).orElse(null);
             if (bank == null) {
                 return ResponseEntity.badRequest().body(Map.of("success", false, "error", "Blood bank not found"));
