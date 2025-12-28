@@ -19,8 +19,9 @@ export class NavbarComponent {
     navLinks = [
         { label: 'Home', href: '#home' },
         { label: 'About', href: '#about' },
-        { label: 'Testimonials', href: '#testimonials' },
-        { label: 'Contact', href: '#contact' }
+        { label: 'Bank Portal', route: '/bank-login' },
+        { label: 'Donor Portal', route: '/donor/login' },
+        { label: 'Admin', route: '/admin-login' }
     ];
 
     @HostListener('window:scroll', [])
@@ -37,9 +38,13 @@ export class NavbarComponent {
     }
 
     navigateTo(link: any) {
-        const element = document.querySelector(link.href);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (link.route) {
+            this.router.navigate([link.route]);
+        } else if (link.href) {
+            const element = document.querySelector(link.href);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
         this.isMobileMenuOpen = false;
     }
