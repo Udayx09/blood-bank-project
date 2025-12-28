@@ -51,17 +51,12 @@ public class DonorAuthController {
             return ResponseEntity.badRequest().body(Map.of("success", false, "error", "Phone number is required"));
         }
 
-        // Try to find donor with different phone formats
-        Donor donor = donorRepository.findByPhone(phone).orElse(null);
-
-        // If not found, try with 91 prefix (Indian phone format)
-        if (donor == null && !phone.startsWith("91") && phone.length() == 10) {
-            donor = donorRepository.findByPhone("91" + phone).orElse(null);
+        // Try to find donor - use just the 10 digits
+        String cleanPhone = phone.replaceAll("[^0-9]", "");
+        if (cleanPhone.length() > 10) {
+            cleanPhone = cleanPhone.substring(cleanPhone.length() - 10);
         }
-        // If not found with prefix, try without it
-        if (donor == null && phone.startsWith("91") && phone.length() == 12) {
-            donor = donorRepository.findByPhone(phone.substring(2)).orElse(null);
-        }
+        Donor donor = donorRepository.findByPhone(cleanPhone).orElse(null);
 
         if (donor == null) {
             return ResponseEntity.badRequest()
@@ -254,15 +249,9 @@ public class DonorAuthController {
             return ResponseEntity.badRequest().body(Map.of("success", false, "error", "Phone number is required"));
         }
 
-        // Normalize and find donor
+        // Normalize and find donor - just use 10 digits
         String normalizedPhone = normalizePhone(phone);
         Donor donor = donorRepository.findByPhone(normalizedPhone).orElse(null);
-
-        // If not found, try with 91 prefix
-        if (donor == null && !phone.startsWith("91") && phone.length() == 10) {
-            normalizedPhone = "91" + phone;
-            donor = donorRepository.findByPhone(normalizedPhone).orElse(null);
-        }
 
         if (donor == null) {
             return ResponseEntity.badRequest()
@@ -335,11 +324,6 @@ public class DonorAuthController {
         String normalizedPhone = normalizePhone(phone);
         Donor donor = donorRepository.findByPhone(normalizedPhone).orElse(null);
 
-        if (donor == null && !phone.startsWith("91") && phone.length() == 10) {
-            normalizedPhone = "91" + phone;
-            donor = donorRepository.findByPhone(normalizedPhone).orElse(null);
-        }
-
         if (donor == null) {
             return ResponseEntity.badRequest()
                     .body(Map.of("success", false, "error", "No account found with this phone number"));
@@ -377,11 +361,9 @@ public class DonorAuthController {
         if (phone == null)
             return null;
         String cleaned = phone.replaceAll("[^0-9]", "");
-        if (cleaned.startsWith("91") && cleaned.length() == 12) {
-            return cleaned;
-        }
-        if (cleaned.length() == 10) {
-            return "91" + cleaned;
+        // Take last 10 digits if longer
+        if (cleaned.length() > 10) {
+            cleaned = cleaned.substring(cleaned.length() - 10);
         }
         return cleaned;
     }

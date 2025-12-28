@@ -472,14 +472,15 @@ public class BloodUnitController {
     }
 
     /**
-     * Normalize phone number to 12-digit format with country code
+     * Normalize phone number to 10-digit format (no country code)
      */
     private String normalizePhone(String phone) {
         if (phone == null)
             return null;
         String digits = phone.replaceAll("[^0-9]", "");
-        if (digits.length() == 10) {
-            digits = "91" + digits;
+        // Take last 10 digits if longer
+        if (digits.length() > 10) {
+            digits = digits.substring(digits.length() - 10);
         }
         return digits;
     }
@@ -501,16 +502,11 @@ public class BloodUnitController {
 
         // Try to find donor with different phone formats
         String cleanPhone = phone.replaceAll("[^0-9]", "");
+        // Take last 10 digits if longer
+        if (cleanPhone.length() > 10) {
+            cleanPhone = cleanPhone.substring(cleanPhone.length() - 10);
+        }
         Donor donor = donorRepository.findByPhone(cleanPhone).orElse(null);
-
-        // If not found, try with 91 prefix (Indian phone format)
-        if (donor == null && !cleanPhone.startsWith("91") && cleanPhone.length() == 10) {
-            donor = donorRepository.findByPhone("91" + cleanPhone).orElse(null);
-        }
-        // If not found with prefix, try without it
-        if (donor == null && cleanPhone.startsWith("91") && cleanPhone.length() == 12) {
-            donor = donorRepository.findByPhone(cleanPhone.substring(2)).orElse(null);
-        }
 
         Map<String, Object> result = new HashMap<>();
 

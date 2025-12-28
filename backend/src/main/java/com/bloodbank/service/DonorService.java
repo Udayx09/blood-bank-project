@@ -320,9 +320,9 @@ public class DonorService {
             return null;
         // Remove all non-digits
         String digits = phone.replaceAll("[^0-9]", "");
-        // Add country code if missing
-        if (digits.length() == 10) {
-            digits = "91" + digits;
+        // Take last 10 digits if longer
+        if (digits.length() > 10) {
+            digits = digits.substring(digits.length() - 10);
         }
         return digits;
     }
