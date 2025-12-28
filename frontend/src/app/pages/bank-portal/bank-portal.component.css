@@ -2676,8 +2676,11 @@
 }
 
 .info-value.blood-type {
-    color: #ff4757;
+    color: #fff;
     font-weight: 700;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    padding: 2px 10px;
+    border-radius: 6px;
 }
 
 .info-value.warning {
