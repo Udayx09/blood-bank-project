@@ -734,14 +734,57 @@
         font-size: 22px;
     }
 
-    /* Table on mobile */
-    .reservations-table-container {
+    /* Table scroll container for mobile */
+    .table-scroll-container {
+        width: 100%;
         overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -12px;
+        padding: 0 12px;
+    }
+
+    .reservations-table {
+        min-width: 600px;
+        font-size: 11px;
     }
 
     .reservations-table th,
     .reservations-table td {
-        padding: 10px 8px;
+        padding: 8px 6px;
+        white-space: nowrap;
+    }
+
+    .reservations-table .patient-info span {
+        font-size: 12px;
+    }
+
+    .reservations-table .patient-info small {
+        font-size: 10px;
+    }
+
+    .blood-badge {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .status-badge {
+        padding: 3px 6px;
+        font-size: 9px;
+    }
+
+    .urgency-badge {
+        padding: 2px 6px;
+        font-size: 9px;
+    }
+
+    .date-cell {
+        font-size: 10px;
+    }
+
+    .action-btn {
+        width: 26px;
+        height: 26px;
         font-size: 12px;
     }
 
