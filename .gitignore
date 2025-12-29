@@ -40,13 +40,12 @@ frontend/.angular/
 backend/src/main/resources/application-local.properties
 
 # ================================
-# WhatsApp Session (IMPORTANT!)
+# WhatsApp Session
+# NOTE: .wwebjs_auth is now tracked to persist WhatsApp login on Railway
 # ================================
-whatsapp-service/.wwebjs_auth/
 whatsapp-service/.wwebjs_cache/
 server/.wwebjs_auth/
 server/.wwebjs_cache/
-**/.wwebjs_auth/
 **/.wwebjs_cache/
 
 # ================================
