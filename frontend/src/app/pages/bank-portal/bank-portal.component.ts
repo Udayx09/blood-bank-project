@@ -701,12 +701,18 @@ export class BankPortalComponent implements OnInit {
 
     formatDate(dateString: string): string {
         if (!dateString) return '';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-IN', {
+        // Ensure the date is parsed as UTC if it doesn't have timezone info
+        let date = new Date(dateString);
+        if (!dateString.endsWith('Z') && !dateString.includes('+')) {
+            date = new Date(dateString + 'Z');
+        }
+        return date.toLocaleString('en-IN', {
             day: 'numeric',
             month: 'short',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Kolkata'
         });
     }
 

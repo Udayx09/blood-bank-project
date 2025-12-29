@@ -56,7 +56,9 @@ public class DonorService {
         this.donationRepository = donationRepository;
         this.donorRequestRepository = donorRequestRepository;
         this.bloodBankRepository = bloodBankRepository;
-        this.webClient = webClientBuilder.build();
+        this.webClient = webClientBuilder
+                .defaultHeader("ngrok-skip-browser-warning", "true")
+                .build();
         this.whatsappServiceUrl = whatsappServiceUrl;
         this.passwordEncoder = passwordEncoder;
     }

@@ -24,7 +24,9 @@ public class WhatsAppService {
             @Value("${whatsapp.service.url}") String whatsappServiceUrl,
             WebClient.Builder webClientBuilder) {
         this.whatsappServiceUrl = whatsappServiceUrl;
-        this.webClient = webClientBuilder.build();
+        this.webClient = webClientBuilder
+                .defaultHeader("ngrok-skip-browser-warning", "true")
+                .build();
     }
 
     public Map<String, Object> getStatus() {

@@ -30,7 +30,9 @@ public class DonorNotificationService {
             WebClient.Builder webClientBuilder,
             @Value("${whatsapp.service.url}") String whatsappServiceUrl) {
         this.donorRepository = donorRepository;
-        this.webClient = webClientBuilder.build();
+        this.webClient = webClientBuilder
+                .defaultHeader("ngrok-skip-browser-warning", "true")
+                .build();
         this.whatsappServiceUrl = whatsappServiceUrl;
     }
 

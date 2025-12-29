@@ -291,6 +291,7 @@ public class DonorAuthController {
             java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
                     .uri(java.net.URI.create(whatsappServiceUrl + "/api/whatsapp/send-donor-otp"))
                     .header("Content-Type", "application/json")
+                    .header("ngrok-skip-browser-warning", "true")
                     .POST(java.net.http.HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
             client.sendAsync(request, java.net.http.HttpResponse.BodyHandlers.ofString());
