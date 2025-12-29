@@ -29,10 +29,17 @@ app.use((req, res, next) => {
 });
 
 /**
- * Initialize WhatsApp client
+ * Initialize WhatsApp client with cloud-compatible settings
  */
 const initWhatsApp = () => {
     console.log('\n📱 Initializing WhatsApp client...');
+
+    // Check for cloud environment Chromium path
+    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ||
+        process.env.CHROME_BIN ||
+        '/usr/bin/chromium-browser';
+
+    console.log('🔧 Using Chromium at:', executablePath);
 
     client = new Client({
         authStrategy: new LocalAuth({
@@ -40,6 +47,7 @@ const initWhatsApp = () => {
         }),
         puppeteer: {
             headless: true,
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH ? executablePath : undefined,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
@@ -47,8 +55,22 @@ const initWhatsApp = () => {
                 '--disable-accelerated-2d-canvas',
                 '--no-first-run',
                 '--no-zygote',
-                '--disable-gpu'
-            ]
+                '--disable-gpu',
+                '--single-process',
+                '--disable-extensions',
+                '--disable-background-networking',
+                '--disable-default-apps',
+                '--disable-sync',
+                '--disable-translate',
+                '--hide-scrollbars',
+                '--metrics-recording-only',
+                '--mute-audio',
+                '--safebrowsing-disable-auto-update',
+                '--ignore-certificate-errors',
+                '--ignore-ssl-errors',
+                '--ignore-certificate-errors-spki-list'
+            ],
+            timeout: 120000  // 2 minute timeout for initialization
         }
     });
 
@@ -77,22 +99,48 @@ const initWhatsApp = () => {
         console.log('🔐 WhatsApp authenticated');
     });
 
-    // Auth failure
-    client.on('auth_failure', (msg) => {
+    // Auth failure - attempt to recover by clearing session
+    client.on('auth_failure', async (msg) => {
         console.error('❌ WhatsApp authentication failed:', msg);
         isReady = false;
+        console.log('🔄 Will retry on next restart...');
     });
 
-    // Disconnected
-    client.on('disconnected', (reason) => {
+    // Disconnected - attempt to reconnect
+    client.on('disconnected', async (reason) => {
         console.log('📱 WhatsApp disconnected:', reason);
         isReady = false;
+        console.log('🔄 Attempting to reconnect in 10 seconds...');
+        setTimeout(() => {
+            console.log('🔄 Reinitializing WhatsApp client...');
+            initWhatsApp();
+        }, 10000);
     });
 
-    // Initialize
-    client.initialize().catch(err => {
-        console.error('❌ Failed to initialize WhatsApp client:', err.message);
+    // Loading screen event - useful for debugging initialization
+    client.on('loading_screen', (percent, message) => {
+        console.log(`⏳ Loading: ${percent}% - ${message}`);
     });
+
+    // Initialize with timeout protection
+    const initTimeout = setTimeout(() => {
+        if (!isReady) {
+            console.log('⚠️ Initialization taking longer than expected...');
+            console.log('💡 This is normal for first-time setup or cloud deployments');
+        }
+    }, 30000);
+
+    client.initialize()
+        .then(() => {
+            clearTimeout(initTimeout);
+            console.log('✅ WhatsApp client initialization started');
+        })
+        .catch(err => {
+            clearTimeout(initTimeout);
+            console.error('❌ Failed to initialize WhatsApp client:', err.message);
+            console.log('🔄 Will retry in 30 seconds...');
+            setTimeout(() => initWhatsApp(), 30000);
+        });
 
     return client;
 };
