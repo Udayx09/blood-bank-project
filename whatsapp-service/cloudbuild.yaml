@@ -34,7 +34,7 @@ steps:
       - '--port'
       - '3001'
       - '--set-env-vars'
-      - 'GCS_BUCKET_NAME=bloodbank-whatsapp-sessions,NODE_ENV=production'
+      - 'NODE_ENV=production'
 
 images:
   - 'gcr.io/$PROJECT_ID/whatsapp-service'

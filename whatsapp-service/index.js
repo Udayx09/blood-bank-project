@@ -2,31 +2,14 @@
  * WhatsApp Microservice
  * Standalone Node.js service for WhatsApp notifications
  * Runs on port 3001 and is called by Spring Boot backend
- * Supports Google Cloud Storage for persistent sessions on Cloud Run
+ * Uses min-instances=1 on Cloud Run for session persistence
  */
 
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { Client, LocalAuth, RemoteAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-
-// Google Cloud Storage for session persistence (Cloud Run)
-let store = null;
-const USE_CLOUD_STORAGE = process.env.GCS_BUCKET_NAME ? true : false;
-
-if (USE_CLOUD_STORAGE) {
-    try {
-        const { GoogleCloudStore } = require('wwebjs-google-cloud');
-        store = new GoogleCloudStore({
-            bucketName: process.env.GCS_BUCKET_NAME,
-            clientId: 'bloodbank-whatsapp'
-        });
-        console.log('☁️ Using Google Cloud Storage for session persistence');
-    } catch (err) {
-        console.warn('⚠️ Google Cloud Storage not available, falling back to LocalAuth');
-    }
-}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -55,28 +38,15 @@ const initWhatsApp = () => {
     // Check for cloud environment Chromium path
     const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ||
         process.env.CHROME_BIN ||
-        '/usr/bin/chromium-browser';
+        '/usr/bin/chromium';
 
     console.log('🔧 Using Chromium at:', executablePath);
-
-    // Choose auth strategy based on environment
-    let authStrategy;
-    if (USE_CLOUD_STORAGE && store) {
-        console.log('☁️ Using RemoteAuth with Google Cloud Storage');
-        authStrategy = new RemoteAuth({
-            store: store,
-            backupSyncIntervalMs: 300000,  // Backup every 5 minutes
-            dataPath: './.wwebjs_auth'
-        });
-    } else {
-        console.log('💾 Using LocalAuth for session storage');
-        authStrategy = new LocalAuth({
-            dataPath: './.wwebjs_auth'
-        });
-    }
+    console.log('💾 Using LocalAuth for session storage');
 
     client = new Client({
-        authStrategy: authStrategy,
+        authStrategy: new LocalAuth({
+            dataPath: './.wwebjs_auth'
+        }),
         puppeteer: {
             headless: true,
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH ? executablePath : undefined,
