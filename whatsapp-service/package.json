@@ -1,7 +1,7 @@
 {
     "name": "whatsapp-microservice",
-    "version": "1.0.0",
-    "description": "WhatsApp Notification Microservice for Blood Bank",
+    "version": "2.0.0",
+    "description": "WhatsApp Notification Microservice for Blood Bank (Demo Mode)",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
@@ -9,16 +9,15 @@
     },
     "keywords": [
         "whatsapp",
-        "microservice"
+        "microservice",
+        "demo"
     ],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
-        "express": "^4.18.2",
-        "qrcode-terminal": "^0.12.0",
-        "whatsapp-web.js": "^1.23.0"
+        "express": "^4.18.2"
     },
     "devDependencies": {
         "nodemon": "^3.0.2"

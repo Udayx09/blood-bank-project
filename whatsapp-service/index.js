@@ -1,23 +1,19 @@
 /**
- * WhatsApp Microservice
- * Standalone Node.js service for WhatsApp notifications
- * Runs on port 3001 and is called by Spring Boot backend
- * Uses min-instances=1 on Cloud Run for session persistence
+ * WhatsApp Microservice - DEMO MODE
+ * Simulates WhatsApp notifications without requiring Puppeteer/Chrome
+ * Perfect for demos, presentations, and development
  */
 
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// WhatsApp client state
-let client = null;
-let isReady = false;
-let qrCodeData = null;
+// Demo mode is always ready
+const isReady = true;
+const DEMO_MODE = true;
 
 // Middleware
 app.use(cors());
@@ -30,152 +26,20 @@ app.use((req, res, next) => {
 });
 
 /**
- * Initialize WhatsApp client with cloud-compatible settings
+ * Log a simulated WhatsApp message
  */
-const initWhatsApp = () => {
-    console.log('\n📱 Initializing WhatsApp client...');
-
-    // Check for cloud environment Chromium path
-    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ||
-        process.env.CHROME_BIN ||
-        '/usr/bin/chromium';
-
-    console.log('🔧 Using Chromium at:', executablePath);
-    console.log('💾 Using LocalAuth for session storage');
-
-    client = new Client({
-        authStrategy: new LocalAuth({
-            dataPath: './.wwebjs_auth'
-        }),
-        puppeteer: {
-            headless: true,
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH ? executablePath : undefined,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-accelerated-2d-canvas',
-                '--no-first-run',
-                '--no-zygote',
-                '--disable-gpu',
-                '--single-process',
-                '--disable-extensions',
-                '--disable-background-networking',
-                '--disable-default-apps',
-                '--disable-sync',
-                '--disable-translate',
-                '--hide-scrollbars',
-                '--metrics-recording-only',
-                '--mute-audio',
-                '--safebrowsing-disable-auto-update',
-                '--ignore-certificate-errors',
-                '--ignore-ssl-errors',
-                '--ignore-certificate-errors-spki-list'
-            ],
-            timeout: 120000  // 2 minute timeout for initialization
-        }
+const logMessage = (phoneNumber, messageType, details) => {
+    console.log('\n╔════════════════════════════════════════════════════════════╗');
+    console.log('║  📱 DEMO MODE - WhatsApp Message Simulated                 ║');
+    console.log('╠════════════════════════════════════════════════════════════╣');
+    console.log(`║  📞 To: ${phoneNumber.padEnd(49)}║`);
+    console.log(`║  📝 Type: ${messageType.padEnd(47)}║`);
+    console.log('╠════════════════════════════════════════════════════════════╣');
+    Object.entries(details).forEach(([key, value]) => {
+        const line = `${key}: ${value}`.substring(0, 56);
+        console.log(`║  ${line.padEnd(58)}║`);
     });
-
-    // QR Code event
-    client.on('qr', (qr) => {
-        qrCodeData = qr;
-        console.log('\n╔════════════════════════════════════════════════════╗');
-        console.log('║     📱 SCAN THIS QR CODE WITH YOUR WHATSAPP        ║');
-        console.log('║     Settings > Linked Devices > Link a Device      ║');
-        console.log('╚════════════════════════════════════════════════════╝\n');
-        qrcode.generate(qr, { small: true });
-    });
-
-    // Ready event
-    client.on('ready', () => {
-        isReady = true;
-        qrCodeData = null;
-        console.log('\n╔════════════════════════════════════════════════════╗');
-        console.log('║     ✅ WHATSAPP CONNECTED SUCCESSFULLY!            ║');
-        console.log('║     Messages will now be sent automatically        ║');
-        console.log('╚════════════════════════════════════════════════════╝\n');
-    });
-
-    // Authenticated event
-    client.on('authenticated', () => {
-        console.log('🔐 WhatsApp authenticated');
-    });
-
-    // Auth failure - attempt to recover by clearing session
-    client.on('auth_failure', async (msg) => {
-        console.error('❌ WhatsApp authentication failed:', msg);
-        isReady = false;
-        console.log('🔄 Will retry on next restart...');
-    });
-
-    // Disconnected - attempt to reconnect
-    client.on('disconnected', async (reason) => {
-        console.log('📱 WhatsApp disconnected:', reason);
-        isReady = false;
-        console.log('🔄 Attempting to reconnect in 10 seconds...');
-        setTimeout(() => {
-            console.log('🔄 Reinitializing WhatsApp client...');
-            initWhatsApp();
-        }, 10000);
-    });
-
-    // Loading screen event - useful for debugging initialization
-    client.on('loading_screen', (percent, message) => {
-        console.log(`⏳ Loading: ${percent}% - ${message}`);
-    });
-
-    // Initialize with timeout protection
-    const initTimeout = setTimeout(() => {
-        if (!isReady) {
-            console.log('⚠️ Initialization taking longer than expected...');
-            console.log('💡 This is normal for first-time setup or cloud deployments');
-        }
-    }, 30000);
-
-    client.initialize()
-        .then(() => {
-            clearTimeout(initTimeout);
-            console.log('✅ WhatsApp client initialization started');
-        })
-        .catch(err => {
-            clearTimeout(initTimeout);
-            console.error('❌ Failed to initialize WhatsApp client:', err.message);
-            console.log('🔄 Will retry in 30 seconds...');
-            setTimeout(() => initWhatsApp(), 30000);
-        });
-
-    return client;
-};
-
-/**
- * Format phone number for WhatsApp
- */
-const formatPhoneNumber = (phone) => {
-    let cleaned = phone.replace(/\D/g, '');
-    if (cleaned.startsWith('91') && cleaned.length > 10) {
-        cleaned = cleaned.substring(2);
-    }
-    return `91${cleaned}@c.us`;
-};
-
-/**
- * Send WhatsApp message
- */
-const sendMessage = async (phoneNumber, message) => {
-    if (!isReady || !client) {
-        console.log('⚠️ WhatsApp not ready. Message not sent.');
-        return false;
-    }
-
-    try {
-        const chatId = formatPhoneNumber(phoneNumber);
-        await client.sendMessage(chatId, message);
-        console.log(`✅ WhatsApp message sent to ${phoneNumber}`);
-        return true;
-    } catch (error) {
-        console.error(`❌ Failed to send WhatsApp message:`, error.message);
-        return false;
-    }
+    console.log('╚════════════════════════════════════════════════════════════╝\n');
 };
 
 // ================== API Endpoints ==================
@@ -186,23 +50,24 @@ const sendMessage = async (phoneNumber, message) => {
 app.get('/api/whatsapp/status', (req, res) => {
     res.json({
         success: true,
-        isReady,
-        hasQR: !!qrCodeData
+        isReady: true,
+        hasQR: false,
+        demoMode: true,
+        message: 'WhatsApp Demo Mode - All messages will be simulated'
     });
 });
 
 /**
- * GET /api/whatsapp/qr - Get QR code page (HTML)
+ * GET /api/whatsapp/qr - QR code page (Demo Mode)
  */
 app.get('/api/whatsapp/qr', (req, res) => {
-    // Return HTML page with status
     const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Status - Blood Bank</title>
+    <title>WhatsApp Demo Mode - Blood Bank</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -223,105 +88,43 @@ app.get('/api/whatsapp/qr', (req, res) => {
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .status-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        .title {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #aaa;
-            margin-bottom: 30px;
-        }
-        .status-connected {
-            background: linear-gradient(135deg, #00b894, #00cec9);
+        .status-icon { font-size: 80px; margin-bottom: 20px; }
+        .title { font-size: 28px; margin-bottom: 10px; }
+        .subtitle { color: #aaa; margin-bottom: 30px; }
+        .status-demo {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             padding: 20px 40px;
             border-radius: 12px;
             font-size: 20px;
             font-weight: bold;
         }
-        .status-waiting {
-            background: linear-gradient(135deg, #fdcb6e, #f39c12);
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-        .qr-container {
-            background: #fff;
+        .features {
+            text-align: left;
+            margin-top: 30px;
             padding: 20px;
+            background: rgba(255,255,255,0.05);
             border-radius: 12px;
-            margin: 20px 0;
-            display: inline-block;
         }
-        .qr-code {
-            font-family: monospace;
-            font-size: 6px;
-            line-height: 1;
-            white-space: pre;
-            color: #000;
-        }
-        .instructions {
-            color: #aaa;
-            font-size: 14px;
-            margin-top: 20px;
-        }
-        .refresh-btn {
-            margin-top: 20px;
-            padding: 10px 30px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .refresh-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
+        .feature { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .feature:last-child { border-bottom: none; }
+        .check { color: #00b894; margin-right: 10px; }
     </style>
-    <meta http-equiv="refresh" content="${isReady ? '30' : '5'}">
 </head>
 <body>
     <div class="container">
-        ${isReady ? `
-            <div class="status-icon">✅</div>
-            <h1 class="title">WhatsApp Connected</h1>
-            <p class="subtitle">Messages will be sent automatically</p>
-            <div class="status-connected">
-                📱 Ready to Send Messages
-            </div>
-            <p class="instructions">
-                Your WhatsApp is linked and ready.<br>
-                Reservation notifications will be sent automatically.
-            </p>
-        ` : qrCodeData ? `
-            <div class="status-icon">📱</div>
-            <h1 class="title">Scan QR Code</h1>
-            <p class="subtitle">Open WhatsApp → Settings → Linked Devices → Link a Device</p>
-            <div class="qr-container">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrCodeData)}" alt="QR Code" />
-            </div>
-            <p class="instructions">
-                Scan this code with your phone's WhatsApp app<br>
-                Page will auto-refresh when connected
-            </p>
-        ` : `
-            <div class="status-icon">⏳</div>
-            <h1 class="title">Initializing...</h1>
-            <p class="subtitle">Please wait while WhatsApp client starts</p>
-            <div class="status-waiting">
-                🔄 Loading WhatsApp...
-            </div>
-            <p class="instructions">
-                The QR code will appear here shortly.<br>
-                Page refreshes automatically.
-            </p>
-        `}
-        <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+        <div class="status-icon">🎭</div>
+        <h1 class="title">Demo Mode Active</h1>
+        <p class="subtitle">No QR code needed - Messages are simulated</p>
+        <div class="status-demo">
+            ✨ Ready for Demonstration
+        </div>
+        <div class="features">
+            <div class="feature"><span class="check">✓</span> Reservation confirmations logged</div>
+            <div class="feature"><span class="check">✓</span> Status updates logged</div>
+            <div class="feature"><span class="check">✓</span> OTP messages logged</div>
+            <div class="feature"><span class="check">✓</span> All API endpoints working</div>
+            <div class="feature"><span class="check">✓</span> No WhatsApp account required</div>
+        </div>
     </div>
 </body>
 </html>
@@ -342,25 +145,18 @@ app.post('/api/whatsapp/send-confirmation', async (req, res) => {
         });
     }
 
-    const message = `🏥 *Blood Bank Notification*
-
-✅ *Reservation Confirmed!*
-
-👤 Patient: ${patientName}
-🩸 Blood Type: ${bloodType}
-📦 Units: ${unitsNeeded}
-🏥 Blood Bank: ${bloodBankName}
-
-🔖 Reservation ID: #${reservationId}
-⏰ Valid for 24 hours
-
-_Thank you for using Blood Bank Service!_`;
-
-    const sent = await sendMessage(phoneNumber, message);
+    logMessage(phoneNumber, 'Reservation Confirmation', {
+        'Patient': patientName,
+        'Blood Type': bloodType,
+        'Units': unitsNeeded,
+        'Blood Bank': bloodBankName,
+        'Reservation ID': reservationId
+    });
 
     res.json({
-        success: sent,
-        message: sent ? 'Confirmation sent' : 'Failed to send confirmation'
+        success: true,
+        message: 'Confirmation sent (Demo Mode)',
+        demoMode: true
     });
 });
 
@@ -377,39 +173,16 @@ app.post('/api/whatsapp/send-status-update', async (req, res) => {
         });
     }
 
-    let emoji, statusText;
-    switch (status) {
-        case 'confirmed':
-            emoji = '🎉';
-            statusText = 'Your reservation has been confirmed by the blood bank!';
-            break;
-        case 'completed':
-            emoji = '✅';
-            statusText = 'Your reservation has been completed. Thank you!';
-            break;
-        case 'cancelled':
-            emoji = '❌';
-            statusText = 'Your reservation has been cancelled. Please contact the blood bank for assistance.';
-            break;
-        default:
-            emoji = 'ℹ️';
-            statusText = `Status updated to: ${status}`;
-    }
-
-    const message = `🏥 *Blood Bank Update*
-
-${emoji} *Status Update*
-
-${statusText}
-
-👤 Patient: ${patientName}
-🏥 Blood Bank: ${bloodBankName}`;
-
-    const sent = await sendMessage(phoneNumber, message);
+    logMessage(phoneNumber, 'Status Update', {
+        'Patient': patientName,
+        'New Status': status,
+        'Blood Bank': bloodBankName
+    });
 
     res.json({
-        success: sent,
-        message: sent ? 'Status update sent' : 'Failed to send status update'
+        success: true,
+        message: 'Status update sent (Demo Mode)',
+        demoMode: true
     });
 });
 
@@ -426,25 +199,20 @@ app.post('/api/whatsapp/send-donor-otp', async (req, res) => {
         });
     }
 
-    const message = `🩸 *Blood Bank - OTP Verification*
-
-Your OTP is: *${otp}*
-
-This code is valid for 10 minutes.
-Do not share this code with anyone.
-
-_If you didn't request this, please ignore._`;
-
-    const sent = await sendMessage(phoneNumber, message);
+    logMessage(phoneNumber, 'OTP Verification', {
+        'OTP Code': otp,
+        'Valid For': '10 minutes'
+    });
 
     res.json({
-        success: sent,
-        message: sent ? 'OTP sent' : 'Failed to send OTP'
+        success: true,
+        message: 'OTP sent (Demo Mode)',
+        demoMode: true
     });
 });
 
 /**
- * POST /api/whatsapp/send-donor-welcome - Send welcome message to new donor
+ * POST /api/whatsapp/send-donor-welcome - Send welcome message
  */
 app.post('/api/whatsapp/send-donor-welcome', async (req, res) => {
     const { phoneNumber, donorName } = req.body;
@@ -456,103 +224,64 @@ app.post('/api/whatsapp/send-donor-welcome', async (req, res) => {
         });
     }
 
-    const message = `🎉 *Welcome to Blood Bank, ${donorName}!*
-
-Thank you for registering as a blood donor! 🩸
-
-You're now part of a community that saves lives.
-
-*What happens next:*
-• We'll notify you when you're eligible to donate
-• You'll receive alerts for blood shortages in your area
-• You can track your donation history in the app
-
-_Every drop counts. Thank you for being a hero!_ ❤️`;
-
-    const sent = await sendMessage(phoneNumber, message);
+    logMessage(phoneNumber, 'Welcome Message', {
+        'Donor Name': donorName,
+        'Message': 'Welcome to Blood Bank!'
+    });
 
     res.json({
-        success: sent,
-        message: sent ? 'Welcome message sent' : 'Failed to send welcome message'
+        success: true,
+        message: 'Welcome message sent (Demo Mode)',
+        demoMode: true
     });
 });
 
 /**
- * POST /api/whatsapp/send-eligibility-reminder - Remind donor they're eligible
+ * POST /api/whatsapp/send-eligibility-reminder
  */
 app.post('/api/whatsapp/send-eligibility-reminder', async (req, res) => {
     const { phoneNumber, donorName } = req.body;
 
-    if (!phoneNumber || !donorName) {
-        return res.status(400).json({
-            success: false,
-            error: 'phoneNumber and donorName are required'
-        });
-    }
-
-    const message = `🩸 *Blood Donation Reminder*
-
-Hi ${donorName}! 👋
-
-Great news - *you're now eligible to donate blood again!* 🎉
-
-It's been 90 days since your last donation, and your body has fully recovered.
-
-*Your donation can save up to 3 lives!*
-
-Ready to donate? Visit your nearest blood bank today.
-
-_Thank you for being a lifesaver!_ ❤️`;
-
-    const sent = await sendMessage(phoneNumber, message);
-
-    res.json({
-        success: sent,
-        message: sent ? 'Eligibility reminder sent' : 'Failed to send reminder'
+    logMessage(phoneNumber || 'unknown', 'Eligibility Reminder', {
+        'Donor': donorName || 'unknown',
+        'Message': 'You are now eligible to donate!'
     });
+
+    res.json({ success: true, message: 'Reminder sent (Demo Mode)', demoMode: true });
 });
 
 /**
- * POST /api/whatsapp/send-blood-shortage-alert - Alert donors about blood shortage
+ * POST /api/whatsapp/send-blood-shortage-alert
  */
 app.post('/api/whatsapp/send-blood-shortage-alert', async (req, res) => {
     const { phoneNumber, donorName, bloodType, city, bloodBankName } = req.body;
 
-    if (!phoneNumber || !bloodType) {
-        return res.status(400).json({
-            success: false,
-            error: 'phoneNumber and bloodType are required'
-        });
-    }
-
-    const name = donorName || 'Donor';
-    const location = city || 'your area';
-    const bank = bloodBankName || 'local blood banks';
-
-    const message = `🚨 *URGENT: Blood Shortage Alert*
-
-Hi ${name},
-
-*${bloodType} blood is critically needed* in ${location}!
-
-${bank} urgently needs donors.
-
-If you're available and eligible to donate, please visit the blood bank as soon as possible.
-
-*Your donation can save a life today!* 🩸
-
-_Reply STOP to unsubscribe from alerts._`;
-
-    const sent = await sendMessage(phoneNumber, message);
-
-    res.json({
-        success: sent,
-        message: sent ? 'Blood shortage alert sent' : 'Failed to send alert'
+    logMessage(phoneNumber || 'unknown', 'Blood Shortage Alert', {
+        'Blood Type': bloodType,
+        'City': city,
+        'Blood Bank': bloodBankName
     });
+
+    res.json({ success: true, message: 'Alert sent (Demo Mode)', demoMode: true });
 });
 
 /**
- * POST /api/whatsapp/send - Send custom message
+ * POST /api/whatsapp/send-donation-request
+ */
+app.post('/api/whatsapp/send-donation-request', async (req, res) => {
+    const { phoneNumber, donorName, bloodBankName, city } = req.body;
+
+    logMessage(phoneNumber || 'unknown', 'Donation Request', {
+        'Donor': donorName,
+        'From Bank': bloodBankName,
+        'City': city
+    });
+
+    res.json({ success: true, message: 'Request sent (Demo Mode)', demoMode: true });
+});
+
+/**
+ * POST /api/whatsapp/send - Generic message
  */
 app.post('/api/whatsapp/send', async (req, res) => {
     const { phoneNumber, message } = req.body;
@@ -564,11 +293,14 @@ app.post('/api/whatsapp/send', async (req, res) => {
         });
     }
 
-    const sent = await sendMessage(phoneNumber, message);
+    logMessage(phoneNumber, 'Custom Message', {
+        'Message': message.substring(0, 50) + (message.length > 50 ? '...' : '')
+    });
 
     res.json({
-        success: sent,
-        message: sent ? 'Message sent' : 'Failed to send message'
+        success: true,
+        message: 'Message sent (Demo Mode)',
+        demoMode: true
     });
 });
 
@@ -576,68 +308,22 @@ app.post('/api/whatsapp/send', async (req, res) => {
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',
-        service: 'WhatsApp Microservice',
-        whatsappConnected: isReady,
+        service: 'WhatsApp Microservice (Demo Mode)',
+        demoMode: true,
         timestamp: new Date().toISOString()
     });
 });
 
-/**
- * POST /api/whatsapp/send-donation-request - Send donation request from bank to donor
- */
-app.post('/api/whatsapp/send-donation-request', async (req, res) => {
-    const { phoneNumber, donorName, bloodBankName, city, bankPhone, bankAddress } = req.body;
-
-    if (!phoneNumber || !donorName || !bloodBankName) {
-        return res.status(400).json({
-            success: false,
-            error: 'phoneNumber, donorName, and bloodBankName are required'
-        });
-    }
-
-    const message = `🩸 *Blood Donation Request*
-
-Dear *${donorName}*,
-
-We hope this message finds you well! 🙏
-
-*${bloodBankName}* kindly requests your help with a blood donation.
-
-━━━━━━━━━━━━━━━
-📍 *Location:* ${city || 'Your area'}
-📞 *Phone:* ${bankPhone || 'Contact us'}
-🏥 *Address:* ${bankAddress || 'Visit us'}
-━━━━━━━━━━━━━━━
-
-Your generous donation can save up to 3 precious lives!
-
-If you are available and willing to donate, please reply with *INTERESTED* and we will get in touch with you.
-
-Thank you so much for considering this request. You are a true lifesaver! ❤️
-
-_With gratitude,_
-_${bloodBankName}_`;
-
-    const sent = await sendMessage(phoneNumber, message);
-
-    res.json({
-        success: sent,
-        message: sent ? 'Donation request sent' : 'Failed to send request'
-    });
-});
-
-// Initialize WhatsApp and start server
-initWhatsApp();
-
+// Start server
 app.listen(PORT, () => {
     console.log(`
-╔════════════════════════════════════════╗
-║   WhatsApp Microservice Started        ║
-╠════════════════════════════════════════╣
-║  🚀 Server running on port ${PORT}         ║
-║  📍 http://localhost:${PORT}              ║
-║  📱 Waiting for WhatsApp connection... ║
-╚════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════╗
+║     🎭 WhatsApp Microservice - DEMO MODE                   ║
+╠════════════════════════════════════════════════════════════╣
+║  🚀 Server running on port ${String(PORT).padEnd(29)}║
+║  📍 http://localhost:${String(PORT).padEnd(36)}║
+║  ✨ All messages will be logged (not actually sent)       ║
+║  📱 No WhatsApp connection required                        ║
+╚════════════════════════════════════════════════════════════╝
     `);
 });
-
