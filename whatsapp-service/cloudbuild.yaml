@@ -33,8 +33,6 @@ steps:
       - '2'
       - '--port'
       - '3001'
-      - '--set-env-vars'
-      - 'NODE_ENV=production'
 
 images:
   - 'gcr.io/$PROJECT_ID/whatsapp-service'

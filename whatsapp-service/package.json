@@ -1,7 +1,7 @@
 {
-    "name": "whatsapp-microservice",
-    "version": "2.0.0",
-    "description": "WhatsApp Notification Microservice for Blood Bank (Demo Mode)",
+    "name": "whatsapp-cloud-service",
+    "version": "1.0.0",
+    "description": "WhatsApp Cloud API Service for Blood Bank",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
@@ -9,12 +9,13 @@
     },
     "keywords": [
         "whatsapp",
-        "microservice",
-        "demo"
+        "cloud-api",
+        "microservice"
     ],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^1.6.2",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "express": "^4.18.2"
