@@ -1599,6 +1599,49 @@
     box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
 }
 
+/* Units Table Wrapper with Scroll Arrows */
+.units-table-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.scroll-arrow {
+    display: none;
+    /* Hidden on desktop */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2ed573, #26de81);
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(46, 213, 115, 0.4);
+    transition: all 0.3s ease;
+}
+
+.scroll-arrow:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 16px rgba(46, 213, 115, 0.5);
+}
+
+.scroll-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.scroll-left {
+    left: 4px;
+}
+
+.scroll-right {
+    right: 4px;
+}
+
 /* Units Table */
 .units-table-container {
     background: #1a1a2e;
@@ -2870,14 +2913,16 @@
         gap: 8px;
     }
 
-    /* Scroll hint indicator */
-    .units-table-container::after {
-        content: '← Scroll →';
-        display: block;
-        text-align: center;
-        padding: 8px;
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 11px;
-        background: linear-gradient(180deg, transparent, rgba(26, 26, 46, 0.9));
+    /* Show scroll arrows on mobile */
+    .scroll-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Hide arrows when at scroll boundaries (handled via JS if needed) */
+    .scroll-arrow:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
     }
 }

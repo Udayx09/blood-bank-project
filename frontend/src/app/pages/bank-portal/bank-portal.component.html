@@ -518,66 +518,78 @@
             </div>
 
             <!-- Units Table -->
-            <div class="units-table-container">
-                <div class="loading-units" *ngIf="loadingUnits">
-                    <div class="spinner"></div>
-                    <p>Loading units...</p>
+            <div class="units-table-wrapper">
+                <!-- Left scroll arrow -->
+                <button class="scroll-arrow scroll-left" (click)="scrollUnitsTable('left')" title="Scroll left">
+                    ‹
+                </button>
+
+                <div class="units-table-container" #unitsTableContainer>
+                    <div class="loading-units" *ngIf="loadingUnits">
+                        <div class="spinner"></div>
+                        <p>Loading units...</p>
+                    </div>
+
+                    <table class="units-table" *ngIf="!loadingUnits && bloodUnits.length > 0">
+                        <thead>
+                            <tr>
+                                <th>Unit #</th>
+                                <th>Blood Type</th>
+                                <th>Component</th>
+                                <th>Collection</th>
+                                <th>Expiry</th>
+                                <th>Days Left</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let unit of bloodUnits" [class]="getExpiryStatusClass(unit.expiryStatus)">
+                                <td class="unit-number">{{ unit.unitNumber }}</td>
+                                <td class="blood-type">{{ unit.bloodType }}</td>
+                                <td>{{ unit.componentName }}</td>
+                                <td>{{ unit.collectionDate }}</td>
+                                <td>{{ unit.expiryDate }}</td>
+                                <td class="days-left" [class.critical]="unit.daysUntilExpiry <= 3">
+                                    <ng-container *ngIf="unit.daysUntilExpiry < 0">Expired</ng-container>
+                                    <ng-container *ngIf="unit.daysUntilExpiry === 0">{{ unit.hoursUntilExpiry || '< 24'
+                                            }} hours</ng-container>
+                                            <ng-container *ngIf="unit.daysUntilExpiry > 0">{{ unit.daysUntilExpiry }}
+                                                days</ng-container>
+                                </td>
+                                <td>
+                                    <span class="unit-status" [class]="'status-' + unit.status.toLowerCase()">
+                                        {{ unit.status }}
+                                    </span>
+                                </td>
+                                <td class="actions">
+                                    <!-- Actions for AVAILABLE units -->
+                                    <button *ngIf="unit.status === 'AVAILABLE'" class="action-btn use"
+                                        (click)="updateUnitStatus(unit, 'USED')" title="Mark as Used">✓</button>
+                                    <button *ngIf="unit.status === 'AVAILABLE'" class="action-btn reserve"
+                                        (click)="updateUnitStatus(unit, 'RESERVED')" title="Reserve">🔒</button>
+                                    <button *ngIf="unit.status === 'AVAILABLE'" class="action-btn discard"
+                                        (click)="updateUnitStatus(unit, 'DISCARDED')" title="Discard">✗</button>
+                                    <!-- Actions for RESERVED units -->
+                                    <button *ngIf="unit.status === 'RESERVED'" class="action-btn unreserve"
+                                        (click)="updateUnitStatus(unit, 'AVAILABLE')" title="Unreserve">🔓</button>
+                                    <button *ngIf="unit.status === 'RESERVED'" class="action-btn use"
+                                        (click)="updateUnitStatus(unit, 'USED')" title="Mark as Used">✓</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="empty-state" *ngIf="!loadingUnits && bloodUnits.length === 0">
+                        <span class="empty-icon">🔍</span>
+                        <p>No blood units found for this filter</p>
+                    </div>
                 </div>
 
-                <table class="units-table" *ngIf="!loadingUnits && bloodUnits.length > 0">
-                    <thead>
-                        <tr>
-                            <th>Unit #</th>
-                            <th>Blood Type</th>
-                            <th>Component</th>
-                            <th>Collection</th>
-                            <th>Expiry</th>
-                            <th>Days Left</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let unit of bloodUnits" [class]="getExpiryStatusClass(unit.expiryStatus)">
-                            <td class="unit-number">{{ unit.unitNumber }}</td>
-                            <td class="blood-type">{{ unit.bloodType }}</td>
-                            <td>{{ unit.componentName }}</td>
-                            <td>{{ unit.collectionDate }}</td>
-                            <td>{{ unit.expiryDate }}</td>
-                            <td class="days-left" [class.critical]="unit.daysUntilExpiry <= 3">
-                                <ng-container *ngIf="unit.daysUntilExpiry < 0">Expired</ng-container>
-                                <ng-container *ngIf="unit.daysUntilExpiry === 0">{{ unit.hoursUntilExpiry || '< 24' }}
-                                        hours</ng-container>
-                                        <ng-container *ngIf="unit.daysUntilExpiry > 0">{{ unit.daysUntilExpiry }}
-                                            days</ng-container>
-                            </td>
-                            <td>
-                                <span class="unit-status" [class]="'status-' + unit.status.toLowerCase()">
-                                    {{ unit.status }}
-                                </span>
-                            </td>
-                            <td class="actions">
-                                <!-- Actions for AVAILABLE units -->
-                                <button *ngIf="unit.status === 'AVAILABLE'" class="action-btn use"
-                                    (click)="updateUnitStatus(unit, 'USED')" title="Mark as Used">✓</button>
-                                <button *ngIf="unit.status === 'AVAILABLE'" class="action-btn reserve"
-                                    (click)="updateUnitStatus(unit, 'RESERVED')" title="Reserve">🔒</button>
-                                <button *ngIf="unit.status === 'AVAILABLE'" class="action-btn discard"
-                                    (click)="updateUnitStatus(unit, 'DISCARDED')" title="Discard">✗</button>
-                                <!-- Actions for RESERVED units -->
-                                <button *ngIf="unit.status === 'RESERVED'" class="action-btn unreserve"
-                                    (click)="updateUnitStatus(unit, 'AVAILABLE')" title="Unreserve">🔓</button>
-                                <button *ngIf="unit.status === 'RESERVED'" class="action-btn use"
-                                    (click)="updateUnitStatus(unit, 'USED')" title="Mark as Used">✓</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="empty-state" *ngIf="!loadingUnits && bloodUnits.length === 0">
-                    <span class="empty-icon">🔍</span>
-                    <p>No blood units found for this filter</p>
-                </div>
+                <!-- Right scroll arrow -->
+                <button class="scroll-arrow scroll-right" (click)="scrollUnitsTable('right')" title="Scroll right">
+                    ›
+                </button>
             </div>
         </div>
 

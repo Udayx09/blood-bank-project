@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -48,6 +48,7 @@ export class BankPortalComponent implements OnInit {
     bloodComponents: any[] = [];
     expirySummary: any = null;
     loadingUnits = false;
+    @ViewChild('unitsTableContainer') unitsTableContainer!: ElementRef;
     showAddUnitForm = false;
     showRecordDonationForm = false;
     newUnit = {
@@ -590,6 +591,18 @@ export class BankPortalComponent implements OnInit {
 
     applyUnitFilter() {
         this.loadBloodUnits();
+    }
+
+    // Scroll units table horizontally
+    scrollUnitsTable(direction: 'left' | 'right') {
+        if (this.unitsTableContainer?.nativeElement) {
+            const container = this.unitsTableContainer.nativeElement;
+            const scrollAmount = 200; // pixels to scroll
+            const newScrollLeft = direction === 'left'
+                ? container.scrollLeft - scrollAmount
+                : container.scrollLeft + scrollAmount;
+            container.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+        }
     }
 
     updateStatus(reservation: any, status: string) {
