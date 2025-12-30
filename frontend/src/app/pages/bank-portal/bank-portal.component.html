@@ -519,10 +519,12 @@
 
             <!-- Units Table -->
             <div class="units-table-wrapper">
-                <!-- Left scroll arrow -->
-                <button class="scroll-arrow scroll-left" (click)="scrollUnitsTable('left')" title="Scroll left">
-                    ‹
-                </button>
+                <!-- Scroll arrows above table -->
+                <div class="scroll-arrows-row">
+                    <button class="scroll-arrow" (click)="scrollUnitsTable('left')" title="Scroll left">←</button>
+                    <span class="scroll-hint">Swipe or tap arrows to see more</span>
+                    <button class="scroll-arrow" (click)="scrollUnitsTable('right')" title="Scroll right">→</button>
+                </div>
 
                 <div class="units-table-container" #unitsTableContainer>
                     <div class="loading-units" *ngIf="loadingUnits">
@@ -585,11 +587,6 @@
                         <p>No blood units found for this filter</p>
                     </div>
                 </div>
-
-                <!-- Right scroll arrow -->
-                <button class="scroll-arrow scroll-right" (click)="scrollUnitsTable('right')" title="Scroll right">
-                    ›
-                </button>
             </div>
         </div>
 
