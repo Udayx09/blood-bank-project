@@ -2733,3 +2733,151 @@
         margin: 10px;
     }
 }
+
+/* Mobile responsive for Blood Units table */
+@media (max-width: 768px) {
+
+    /* Units toolbar on mobile */
+    .units-toolbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .units-toolbar .filters {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .units-toolbar .filters select {
+        flex: 1;
+        min-width: 100px;
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .units-toolbar .toolbar-actions {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .units-toolbar .toolbar-actions button {
+        flex: 1;
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+
+    /* Expiry summary cards */
+    .expiry-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .summary-card {
+        padding: 12px;
+    }
+
+    .summary-value {
+        font-size: 20px;
+    }
+
+    .summary-label {
+        font-size: 10px;
+    }
+
+    /* Units table container - enable horizontal scroll */
+    .units-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -12px;
+        padding: 0 12px;
+    }
+
+    /* Units table - set minimum width for scroll */
+    .units-table {
+        min-width: 700px;
+        font-size: 12px;
+    }
+
+    .units-table th,
+    .units-table td {
+        padding: 10px 8px;
+        white-space: nowrap;
+    }
+
+    .units-table th {
+        font-size: 10px;
+    }
+
+    /* Compact unit number */
+    .unit-number {
+        font-size: 11px;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Blood type column */
+    .units-table .blood-type {
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    /* Days left column */
+    .days-left {
+        font-size: 11px;
+    }
+
+    /* Unit status badge */
+    .unit-status {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    /* Action buttons */
+    .units-table .actions {
+        display: flex;
+        gap: 4px;
+    }
+
+    .units-table .action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    /* Empty state */
+    .units-table-container .empty-state {
+        padding: 24px;
+    }
+
+    .empty-icon {
+        font-size: 32px;
+    }
+
+    /* Pending donations section */
+    .pending-donations-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .pending-donation-card {
+        padding: 12px;
+    }
+
+    .pending-donor-info {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* Scroll hint indicator */
+    .units-table-container::after {
+        content: '← Scroll →';
+        display: block;
+        text-align: center;
+        padding: 8px;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 11px;
+        background: linear-gradient(180deg, transparent, rgba(26, 26, 46, 0.9));
+    }
+}
