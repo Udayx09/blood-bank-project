@@ -103,8 +103,8 @@ export class BankLoginComponent {
     fillDemoCredentials(event: Event) {
         const checked = (event.target as HTMLInputElement).checked;
         if (checked) {
-            this.phone = '7498497227';
-            this.password = 'athar@1234';
+            this.phone = '9999999999';
+            this.password = 'demo123';
         } else {
             this.phone = '';
             this.password = '';
