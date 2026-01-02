@@ -20,13 +20,7 @@ import { CommonModule } from '@angular/common';
                                placeholder="Enter admin password" required>
                     </div>
                     
-                    <!-- Demo Credentials Checkbox -->
-                    <div class="demo-credentials">
-                        <label class="demo-checkbox">
-                            <input type="checkbox" (change)="fillDemoCredentials($event)" />
-                            <span>Use demo credentials (for evaluators)</span>
-                        </label>
-                    </div>
+
                     
                     <p class="error" *ngIf="error">{{ error }}</p>
                     
@@ -85,28 +79,7 @@ import { CommonModule } from '@angular/common';
         .login-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(79,195,247,0.4); }
         .back-link { display: block; margin-top: 1.5rem; color: #4fc3f7; text-decoration: none; }
         
-        /* Demo Credentials */
-        .demo-credentials {
-            margin-bottom: 1.5rem;
-            padding: 12px 16px;
-            background: rgba(46, 213, 115, 0.15);
-            border: 1px solid rgba(46, 213, 115, 0.3);
-            border-radius: 10px;
-        }
-        .demo-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            color: #2ed573;
-            font-size: 14px;
-        }
-        .demo-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #2ed573;
-            cursor: pointer;
-        }
+
     `]
 })
 export class AdminLoginComponent implements OnInit {
@@ -132,12 +105,5 @@ export class AdminLoginComponent implements OnInit {
         }
     }
 
-    fillDemoCredentials(event: Event) {
-        const checked = (event.target as HTMLInputElement).checked;
-        if (checked) {
-            this.password = 'udaysproject18';
-        } else {
-            this.password = '';
-        }
-    }
+
 }
