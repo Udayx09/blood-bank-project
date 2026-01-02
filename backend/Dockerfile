@@ -1,3 +1,4 @@
+# Cache bust: 2026-01-02-v2
 # Build stage - use Maven image directly (no wrapper issues)
 FROM maven:3.9-eclipse-temurin-17 AS builder
 WORKDIR /app
