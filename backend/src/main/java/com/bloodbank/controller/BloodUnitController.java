@@ -446,10 +446,9 @@ public class BloodUnitController {
     }
 
     private String generateUnitNumber(Long bankId) {
-        // Format: B{bankId}-{yyMMdd}-{random4digits}
-        String datePart = java.time.format.DateTimeFormatter.ofPattern("yyMMdd").format(LocalDate.now());
-        int random = (int) (Math.random() * 10000);
-        return String.format("B%d-%s-%04d", bankId, datePart, random);
+        // Find max unit number across ALL banks (global counter)
+        long maxCount = bloodUnitRepository.count();
+        return String.format("%03d", maxCount + 1);
     }
 
     private Map<String, Object> convertToDto(BloodUnit unit) {
